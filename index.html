@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OTTA KANBAN</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        .header p {
+            opacity: 0.9;
+            font-size: 1.1em;
+        }
+        .kanban {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .column {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        .column-header {
+            font-size: 1.3em;
+            font-weight: bold;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+            color: #333;
+        }
+        .card {
+            background: white;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+            border-left: 4px solid #667eea;
+        }
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        .card-title {
+            color: #333;
+            font-size: 0.95em;
+            line-height: 1.4;
+        }
+        .footer {
+            text-align: center;
+            color: white;
+            margin-top: 40px;
+            opacity: 0.8;
+        }
+        .badge {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.75em;
+            margin-left: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🦞 OTTA KANBAN</h1>
+        <p>Project Overview • Last updated: <span id="timestamp"></span></p>
+    </div>
+
+    <div class="kanban">
+        <div class="column">
+            <div class="column-header">📋 Backlog <span class="badge">2</span></div>
+            <div class="card">
+                <div class="card-title">Camino API klíč pro route planning</div>
+            </div>
+            <div class="card">
+                <div class="card-title">🔴 TEST - Gmail OAuth dokončit</div>
+            </div>
+        </div>
+
+        <div class="column">
+            <div class="column-header">✅ Done <span class="badge">17</span></div>
+            <div class="card">
+                <div class="card-title">Potrace nainstalován</div>
+            </div>
+            <div class="card">
+                <div class="card-title">ImageMagick nainstalován</div>
+            </div>
+            <div class="card">
+                <div class="card-title">Auto-updater cron (4:00 ráno)</div>
+            </div>
+            <div class="card">
+                <div class="card-title">Trace-to-SVG skill nainstalován</div>
+            </div>
+            <div class="card">
+                <div class="card-title">Notion Kanban vytvořen</div>
+            </div>
+            <div class="card">
+                <div class="card-title">Brave Search API klíč</div>
+            </div>
+            <div class="card">
+                <div class="card-title">Lokace uloženy do TOOLS.md</div>
+            </div>
+            <div class="card">
+                <div class="card-title">OpenClaw Chat.html ikona</div>
+            </div>
+            <div class="card">
+                <div class="card-title">WhatsApp relinking</div>
+            </div>
+            <div class="card">
+                <div class="card-title">cliclick nainstalován</div>
+            </div>
+            <div class="card">
+                <div class="card-title">Kimi K2.5 Cloud jako primární model</div>
+            </div>
+            <div class="card">
+                <div class="card-title">Tailscale remote access</div>
+            </div>
+            <div class="card">
+                <div class="card-title">Route planning skill</div>
+            </div>
+            <div class="card">
+                <div class="card-title">Google OAuth credentials vytvořeny</div>
+            </div>
+            <div class="card">
+                <div class="card-title">Session management nastaveno</div>
+            </div>
+            <div class="card">
+                <div class="card-title">OpenClaw Restart & Opravy (starý clawdbot odstraněn)</div>
+            </div>
+            <div class="card">
+                <div class="card-title">Lokální AI modely - Kimi K2.5 Cloud primary + Ollama fallbacks</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>🦞 Generated by Otto • Data from Notion</p>
+    </div>
+
+    <script>
+        document.getElementById('timestamp').textContent = new Date().toLocaleString('cs-CZ');
+    </script>
+</body>
+</html>

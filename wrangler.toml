@@ -1,0 +1,4 @@
+name = "otta-kanban"
+compatibility_date = "2026-02-25"
+build_command = "echo 'Built via OpenClaw'"
+publish_directory = "."

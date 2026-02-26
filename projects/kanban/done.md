@@ -20,11 +20,6 @@
 - **Popis:** Vytvořen Sales API projekt (Python FastAPI + Cloudflare Workers). D1 database, schema, Wrangler deploy, cron trigger. Live: sales-api.otto-1a4.workers.dev
 - **Typ:** feature, 8.2.2026 večer
 
-## 📚 Replicant Research
-- **Status:** Hotovo (8.2.2026 večer)
-- **Popis:** Dokumentace Moltbook Replicant pattern - self-replicating agents. Vytvoření `REPLICANT.md` s full konceptem pro Otík Cloudflare.
-- **Typ:** research, 8.2.2026 večer
-
 ## 🐦 X/Twitter Skill
 - **Status:** Hotovo (8.2.2026)
 - **Popis:** baoyu-post-to-x skill nainstalován, testovací tweet úspěšný
@@ -58,4 +53,4 @@
 
 ---
 
-*Last updated: 2026-02-26 21:06 CET*
+*Last updated: 2026-02-26 22:43 CET*

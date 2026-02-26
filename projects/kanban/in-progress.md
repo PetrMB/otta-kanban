@@ -9,14 +9,6 @@
 - **GitHub:** `projects/sales-api/`
 - **Priority:** Vysoká
 
-## ☁️ Otík Cloudflare Replicant
-- **Status:** Research
-- **Start:** 8.2.2026
-- **Koncept:** Hybrid edge agent (Workers AI + Tailscale tunnel)
-- **Pattern:** Self-replicating (inspirováno Moltbook)
-- **GitHub:** `projects/otik-cloudflare/`
-- **Priority:** Střední
-
 ---
 
-*Last updated: 2026-02-26 21:06 CET*
+*Last updated: 2026-02-26 22:43 CET*

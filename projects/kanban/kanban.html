@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kanban — Otto Honeger</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f5f7fa; padding: 20px; }
+    h1 { text-align: center; margin-bottom: 30px; color: #2c3e50; }
+    .board { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
+    .column { background: #e5e7eb; border-radius: 8px; padding: 15px; min-width: 350px; max-width: 450px; flex: 1; }
+    .column h2 { margin-bottom: 15px; padding-bottom: 10px; border-bottom: 2px solid #d1d5db; font-size: 1.1rem; }
+    .column.backlog h2 { border-color: #fbbf24; color: #b45309; }
+    .column.rozpracovano h2 { border-color: #3b82f6; color: #1e40af; }
+    .column.done h2 { border-color: #22c55e; color: #15803d; }
+    .task { background: white; padding: 12px; border-radius: 6px; margin-bottom: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    .task h4 { margin-bottom: 6px; font-size: 0.95rem; }
+    .task p { color: #4b5563; margin-bottom: 6px; }
+    .task .priority-badge { display: inline-block; padding: 2px 6px; border-radius: 4px; font-size: 0.75rem; margin-right: 8px; }
+    .priority-high { background: #dcfce7; color: #166534; }
+    .priority-medium { background: #fef3c7; color: #92400e; }
+    .task .status { color: #6b7280; font-size: 0.8rem; }
+  </style>
+</head>
+<body>
+  <h1>📝 Otto Honeger — Kanban</h1>
+  <div class="board">
+    <div class="column backlog">
+      <h2>📝 Backlog</h2>
+      <div class="task"><h4><span class="priority-badge priority-medium">🟡 Střední</span>📱 iOS/Android App</h4><p>Spárovat mobil jako node pro Canvas a kameru, rozšířit pro nové funkce</p><p class="status">feature</p></div>
+      <div class="task"><h4><span class="priority-badge priority-medium">🟡 Střední</span>🏠 Smart Home (Rozšíření)</h4><p>Rozšíření Philips Hue, 8Sleep, Home Assistant integrace</p><p class="status">integrace</p></div>
+      <div class="task"><h4><span class="priority-badge priority-high">🟢 Vysoká</span>📧 Email Automation</h4><p>Gmail Pub/Sub triggers pro automatické reakce na emaily</p><p class="status">integrace</p></div>
+      <div class="task"><h4><span class="priority-badge priority-high">🟢 Vysoká</span>🎵 Apple Music Control</h4><p>Ovládání přehrávání Apple Music</p><p class="status">integrace</p></div>
+      <div class="task"><h4><span class="priority-badge priority-medium">🟡 Střední</span>🎭 Divadlo Bot</h4><p>Automatické sledování volných lístků na divadlobakov.cz</p><p class="status">feature</p></div>
+      <div class="task"><h4><span class="priority-badge priority-high">🟢 Vysoká</span>🪝 Webhooks</h4><p>Prozkoumat a nastavit webhook podporu pro external triggers</p><p class="status">integrace</p></div>
+    </div>
+    <div class="column rozpracovano">
+      <h2>🚀 Rozpracováno</h2>
+      <div class="task"><h4>🛒 Sales API - Databáze akcí</h4><p>FastAPI + Cloudflare Workers + D1 Database</p><p>Scraping, fuzzy search, price history</p><p class="status">WIP od 8.2.2026 | API: sales-api.otto-1a4.workers.dev</p></div>
+      <div class="task"><h4>☁️ Otík Cloudflare Replicant</h4><p>Workers AI + Tailscale tunnel, Self-replicating pattern</p><p>Research</p><p class="status">Research od 8.2.2026</p></div>
+    </div>
+    <div class="column done">
+      <h2>✅ Hotovo</h2>
+      <div class="task"><h4>🗣️ TTS Voice Fix</h4><p>Zuzana → Jan (cs_CZ mužský Premium)</p><p class="status">konfigurace | 8.2.2026 večer</p></div>
+      <div class="task"><h4>🔑 GitHub Token → Bitwarden</h4><p>Github PAT bezpečně uložen</p><p class="status">bezpečnost | 8.2.2026 večer</p></div>
+      <div class="task"><h4>🤖 Qwen 2.5 14B + Model Sync</h4><p>Sync helper script vytvořen</p><p class="status">AI, konfigurace | 8.2.2026 večer</p></div>
+      <div class="task"><h4>🛒 Sales API Setup</h4><p>FastAPI + Workers + D1, live: sales-api.otto-1a4.workers.dev</p><p class="status">feature | 8.2.2026 večer</p></div>
+      <div class="task"><h4>📚 Replicant Research</h4><p>REPLICANT.md s full konceptem</p><p class="status">research | 8.2.2026 večer</p></div>
+      <div class="task"><h4>🐦 X/Twitter Skill</h4><p>baoyu-post-to-x nainstalován</p><p class="status">8.2.2026</p></div>
+      <div class="task"><h4>🦞 Moltbook CLAIMED</h4><p>Agent "Otik_" aktivní na moltbook.com/u/Otik_</p><p class="status">8.2.2026 verified 19:23</p></div>
+      <div class="task"><h4>📧 Email Cleanup</h4><p>Smazáno 500+ newsletterů + promo emailů</p><p class="status">úklid | 8.2.2026</p></div>
+      <div class="task"><h4>🔐 Bitwarden Password Manager</h4><p>Všechny API klíče v Bitwarden</p><p class="status">bezpečnost</p></div>
+      <div class="task"><h4>📱 iOS/Android App</h4><p>Spárovat mobil jako node pro Canvas a kameru</p><p class="status">feature | 6.2.2026</p></div>
+      <div class="task"><h4>🏠 Smart Home</h4><p>Philips Hue, 8Sleep, Home Assistant</p><p class="status">integrace | 6.2.2026</p></div>
+    </div>
+  </div>
+</body>
+</html>

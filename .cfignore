@@ -1,0 +1,22 @@
+# Pages ignore rules
+node_modules
+.git
+.venv*
+venv-*
+*.db
+.DS_Store
+*.log
+*.pyc
+__pycache__
+.cache
+.searxng
+backup
+searxng
+venv-qwen-tts
+.idea
+*.swp
+*.swo
+
+# Build output (when using build step)
+# dist
+# build

@@ -38,3 +38,9 @@ Skills are shared. Your setup is yours. Keeping them apart means you can update 
 ---
 
 Add whatever helps you do your job. This is your cheat sheet.
+
+## Scripts
+
+- `scripts/shopping-deals.py` - Automated shopping deal checker (runs daily at 8:00 AM)
+  - Checks current deals on items in SHOPPING_LIST
+  - Sends formatted results via iMessage to user

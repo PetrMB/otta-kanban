@@ -17,87 +17,38 @@
     .task { background: white; padding: 12px; border-radius: 6px; margin-bottom: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
     .task h4 { margin-bottom: 6px; font-size: 0.95rem; }
     .task p { color: #4b5563; margin-bottom: 6px; }
-    .task .priority-badge { display: inline-block; padding: 2px 6px; border-radius: 4px; font-size: 0.75rem; margin-right: 8px; }
-    .priority-high { background: #dcfce7; color: #166534; }
-    .priority-medium { background: #fef3c7; color: #92400e; }
     .task .status { color: #6b7280; font-size: 0.8rem; }
   </style>
 </head>
 <body>
-  <h1>📝 Otto Honeger — Kanban (Updated 2026-03-01)</h1>
+  <h1>📝 Otto Honeger — Kanban</h1>
   <div class="board">
     <div class="column backlog">
       <h2>📝 Backlog</h2>
-      <div class="task"><h4>**Status:** Naplánováno</h4><p class="status"></p></div>
-      <div class="task"><h4>**Popis:** Spárovat mobil jako node pro Canvas a kameru, rozšířit pro nové funkce</h4><p class="status"></p></div>
-      <div class="task"><h4>**Typ:** feature</h4><p class="status"></p></div>
-      <div class="task"><h4>**Priority:** Střední</h4><p class="status"></p></div>
-      <div class="task"><h4>**Status:** Naplánováno</h4><p class="status"></p></div>
-      <div class="task"><h4>**Popis:** rozšíření Philips Hue, 8Sleep, Home Assistant integrace</h4><p class="status"></p></div>
-      <div class="task"><h4>**Typ:** integrace</h4><p class="status"></p></div>
-      <div class="task"><h4>**Priority:** Střední</h4><p class="status"></p></div>
-      <div class="task"><h4>**Status:** Naplánováno</h4><p class="status"></p></div>
-      <div class="task"><h4>**Popis:** Gmail Pub/Sub triggers pro automatické reakce na emaily</h4><p class="status"></p></div>
-      <div class="task"><h4>**Typ:** integrace</h4><p class="status"></p></div>
-      <div class="task"><h4>**Priority:** Vysoká</h4><p class="status"></p></div>
-      <div class="task"><h4>**Status:** Naplánováno</h4><p class="status"></p></div>
-      <div class="task"><h4>**Popis:** Ovládání přehrávání Apple Music</h4><p class="status"></p></div>
-      <div class="task"><h4>**Typ:** integrace</h4><p class="status"></p></div>
-      <div class="task"><h4>**Priority:** Vysoká</h4><p class="status"></p></div>
-      <div class="task"><h4>**Status:** Naplánováno</h4><p class="status"></p></div>
-      <div class="task"><h4>**Popis:** Automatické sledování volných lístků na divadlobakov.cz</h4><p class="status"></p></div>
-      <div class="task"><h4>**Typ:** feature</h4><p class="status"></p></div>
-      <div class="task"><h4>**Priority:** Střední</h4><p class="status"></p></div>
-      <div class="task"><h4>**Status:** Naplánováno</h4><p class="status"></p></div>
-      <div class="task"><h4>**Popis:** Prozkoumat a nastavit webhook podporu pro external triggers</h4><p class="status"></p></div>
-      <div class="task"><h4>**Typ:** integrace</h4><p class="status"></p></div>
-      <div class="task"><h4>**Priority:** Vysoká</h4><p class="status"></p></div>
+      <div class="task"><h4>📱 iOS/Android App</h4><p>Spárovat mobil jako node pro Canvas a kameru, rozšířit pro nové funkce</p><p class="status">feature | Střední</p></div>
+      <div class="task"><h4>🏠 Smart Home (Rozšíření)</h4><p>Rozšíření Philips Hue, 8Sleep, Home Assistant integrace</p><p class="status">integrace | Střední</p></div>
+      <div class="task"><h4>📧 Email Automation</h4><p>Gmail Pub/Sub triggers pro automatické reakce na emaily</p><p class="status">integrace | Vysoká</p></div>
+      <div class="task"><h4>🎵 Apple Music Control</h4><p>Ovládání přehrávání Apple Music</p><p class="status">integrace | Vysoká</p></div>
+      <div class="task"><h4>🎭 Divadlo Bot</h4><p>Automatické sledování volných lístků na divadlobakov.cz</p><p class="status">feature | Střední</p></div>
+      <div class="task"><h4>🪝 Webhooks</h4><p>Prozkoumat a nastavit webhook podporu pro external triggers</p><p class="status">integrace | Vysoká</p></div>
     </div>
     <div class="column rozpracovano">
       <h2>🚀 Rozpracováno</h2>
-      <div class="task"><h4>**Status:** WIP (Work in Progress)</h4><p class="status"></p></div>
-      <div class="task"><h4>**Start:** 8.2.2026</h4><p class="status"></p></div>
-      <div class="task"><h4>**Tech:** FastAPI + Cloudflare Workers + D1 Database</h4><p class="status"></p></div>
-      <div class="task"><h4>**Funkce:** Scraping, fuzzy search, price history</h4><p class="status"></p></div>
-      <div class="task"><h4>**API:** `sales-api.otto-1a4.workers.dev`</h4><p class="status"></p></div>
-      <div class="task"><h4>**GitHub:** `projects/sales-api/`</h4><p class="status"></p></div>
-      <div class="task"><h4>**Priority:** Vysoká</h4><p class="status"></p></div>
+      <div class="task"><h4>🛒 Sales API - Databáze akcí</h4><p>FastAPI + Cloudflare Workers + D1 Database</p><p class="status">WIP od 8.2.2026 | API: sales-api.otto-1a4.workers.dev</p></div>
     </div>
     <div class="column done">
       <h2>✅ Hotovo</h2>
-      <div class="task"><h4>**Status:** Hotovo (8.2.2026 večer)</h4><p class="status"></p></div>
-      <div class="task"><h4>**Popis:** Přepnut preferovaný hlas pro Voice Wake: Zuzana → Jan (cs_CZ mužský Premium hlas)</h4><p class="status"></p></div>
-      <div class="task"><h4>**Typ:** konfigurace</h4><p class="status"></p></div>
-      <div class="task"><h4>**Status:** Hotovo (8.2.2026 večer)</h4><p class="status"></p></div>
-      <div class="task"><h4>**Popis:** GitHub Personal Access Token bezpečně uložen do Bitwarden + MEMORY.md</h4><p class="status"></p></div>
-      <div class="task"><h4>**Typ:** bezpečnost</h4><p class="status"></p></div>
-      <div class="task"><h4>**Status:** Hotovo (8.2.2026 večer)</h4><p class="status"></p></div>
-      <div class="task"><h4>**Popis:** Vyřešen incident s model sync (qwen2.5:14b timeout). Vytvořen helper script `sync-ollama-models.sh` pro automatickou synchronizaci Ollama modelů do OpenClaw config.</h4><p class="status"></p></div>
-      <div class="task"><h4>**Typ:** AI, konfigurace</h4><p class="status"></p></div>
-      <div class="task"><h4>**Status:** Hotovo (8.2.2026 večer)</h4><p class="status"></p></div>
-      <div class="task"><h4>**Popis:** Vytvořen Sales API projekt (Python FastAPI + Cloudflare Workers). D1 database, schema, Wrangler deploy, cron trigger. Live: sales-api.otto-1a4.workers.dev</h4><p class="status"></p></div>
-      <div class="task"><h4>**Typ:** feature, 8.2.2026 večer</h4><p class="status"></p></div>
-      <div class="task"><h4>**Status:** Hotovo (8.2.2026)</h4><p class="status"></p></div>
-      <div class="task"><h4>**Popis:** baoyu-post-to-x skill nainstalován, testovací tweet úspěšný</h4><p class="status"></p></div>
-      <div class="task"><h4>**Typ:** - </h4><p class="status"></p></div>
-      <div class="task"><h4>**Status:** Hotovo (8.2.2026, verified 19:23)</h4><p class="status"></p></div>
-      <div class="task"><h4>**Popis:** Agent "Otik_" aktivní na Moltbook! Můžu postovat, komentovat, prozkoumávat.</h4><p class="status"></p></div>
-      <div class="task"><h4>**URL:** moltbook.com/u/Otik_</h4><p class="status"></p></div>
-      <div class="task"><h4>**Typ:** - </h4><p class="status"></p></div>
-      <div class="task"><h4>**Status:** Hotovo (8.2.2026)</h4><p class="status"></p></div>
-      <div class="task"><h4>**Popis:** Smazáno 500+ generických newsletterů a promo emailů do 8.2.2026 + MyHeritage nabídky</h4><p class="status"></p></div>
-      <div class="task"><h4>**Typ:** úklid</h4><p class="status"></p></div>
-      <div class="task"><h4>**Status:** Hotovo</h4><p class="status"></p></div>
-      <div class="task"><h4>**Popis:** Všechny API klíče přesunuty do Bitwarden (OpenAI, Ollama, Cloudflare atd.)</h4><p class="status"></p></div>
-      <div class="task"><h4>**Typ:** bezpečnost</h4><p class="status"></p></div>
-      <div class="task"><h4>**Status:** Hotovo (6.2.2026)</h4><p class="status"></p></div>
-      <div class="task"><h4>**Popis:** Spárovat mobil jako node pro Canvas a kameru</h4><p class="status"></p></div>
-      <div class="task"><h4>**Typ:** feature</h4><p class="status"></p></div>
-      <div class="task"><h4>**Status:** Hotovo (6.2.2026)</h4><p class="status"></p></div>
-      <div class="task"><h4>**Popis:** Philips Hue, 8Sleep, Home Assistant integrace</h4><p class="status"></p></div>
-      <div class="task"><h4>**Typ:** integrace</h4><p class="status"></p></div>
+      <div class="task"><h4>🗣️ TTS Voice Fix</h4><p>Zuzana → Jan (cs_CZ mužský Premium)</p><p class="status">konfigurace | 8.2.2026 večer</p></div>
+      <div class="task"><h4>🔑 GitHub Token → Bitwarden</h4><p>Github PAT bezpečně uložen</p><p class="status">bezpečnost | 8.2.2026 večer</p></div>
+      <div class="task"><h4>🤖 Qwen 2.5 14B + Model Sync</h4><p>Sync helper script vytvořen</p><p class="status">AI, konfigurace | 8.2.2026 večer</p></div>
+      <div class="task"><h4>🛒 Sales API Setup</h4><p>FastAPI + Workers + D1, live: sales-api.otto-1a4.workers.dev</p><p class="status">feature | 8.2.2026 večer</p></div>
+      <div class="task"><h4>🐦 X/Twitter Skill</h4><p>baoyu-post-to-x nainstalován</p><p class="status">8.2.2026</p></div>
+      <div class="task"><h4>🦞 Moltbook CLAIMED</h4><p>Agent "Otik_" aktivní na moltbook.com/u/Otik_</p><p class="status">8.2.2026 verified 19:23</p></div>
+      <div class="task"><h4>📧 Email Cleanup</h4><p>Smazáno 500+ newsletterů + promo emailů</p><p class="status">úklid | 8.2.2026</p></div>
+      <div class="task"><h4>🔐 Bitwarden Password Manager</h4><p>Všechny API klíče v Bitwarden</p><p class="status">bezpečnost</p></div>
+      <div class="task"><h4>📱 iOS/Android App</h4><p>Spárovat mobil jako node pro Canvas a kameru</p><p class="status">feature | 6.2.2026</p></div>
+      <div class="task"><h4>🏠 Smart Home</h4><p>Philips Hue, 8Sleep, Home Assistant</p><p class="status">integrace | 6.2.2026</p></div>
     </div>
   </div>
 </body>
 </html>
-<!-- Force rebuild Sun Mar  1 21:40:03 CET 2026 -->

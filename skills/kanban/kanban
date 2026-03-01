@@ -1,0 +1,6 @@
+#!/bin/bash
+# Kanban skill main entry point
+# Usage: kanban <command> [section] [task]
+
+cd "$(dirname "$0")"
+node index.js "$@"

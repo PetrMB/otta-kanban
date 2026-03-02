@@ -1,0 +1,65 @@
+{
+  "deals": [
+    {
+      "item": "milk",
+      "product": "Mléko polotučné pasterované",
+      "price": 19.9,
+      "store": "Penny",
+      "date_start": "25.02.2026",
+      "date_end": "03.03.2026",
+      "has_deal": true,
+      "source": "penny_homepage"
+    },
+    {
+      "item": "bread",
+      "product": "Chléb polohrubý pečivo",
+      "price": 24.9,
+      "store": "Penny",
+      "date_start": "25.02.2026",
+      "date_end": "03.03.2026",
+      "has_deal": true,
+      "source": "penny_homepage"
+    },
+    {
+      "item": "eggs",
+      "product": "Vejce třídní velké",
+      "price": 39.9,
+      "store": "Penny",
+      "date_start": "25.02.2026",
+      "date_end": "03.03.2026",
+      "has_deal": true,
+      "source": "penny_homepage"
+    },
+    {
+      "item": "cheese",
+      "product": "Sýr Eidam 45% plátky Zlatý sýr",
+      "price": 14.9,
+      "store": "Penny",
+      "date_start": "25.02.2026",
+      "date_end": "03.03.2026",
+      "has_deal": true,
+      "source": "penny_homepage"
+    },
+    {
+      "item": "vegetables",
+      "product": "Zelenina Mix",
+      "price": 29.9,
+      "store": "Penny",
+      "date_start": "25.02.2026",
+      "date_end": "03.03.2026",
+      "has_deal": true,
+      "source": "penny_homepage"
+    },
+    {
+      "item": "cheese",
+      "product": "mozzarellu",
+      "price": 14.9,
+      "store": "Lidl",
+      "date_start": "02.03.2026",
+      "date_end": "04.03.2026",
+      "has_deal": true,
+      "source": "najdislevu_lidl_letak"
+    }
+  ],
+  "has_any_deals": true
+}

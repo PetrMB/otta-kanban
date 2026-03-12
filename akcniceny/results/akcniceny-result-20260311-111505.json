@@ -1,0 +1,9 @@
+{
+  "timestamp": "2026-03-11T11:15:05.463430",
+  "scanned_files": [],
+  "findings": [],
+  "errors": [
+    "No image files found in scans directory"
+  ],
+  "summary": "No images to process"
+}

@@ -8,13 +8,20 @@ import json
 import re
 from pathlib import Path
 
-# Basic shopping list (user can update this)
+# Basic shopping list (synced with Apple Reminders "Nákupy")
 SHOPPING_LIST = [
     "milk",
     "bread",
     "eggs",
     "cheese",
     "vegetables",
+    "bananas",
+    "chicken",
+    "pork",
+    "tomato",
+    "coshida",
+    "puding",
+    "salad",
 ]
 
 # Czech mapping of items to common search terms
@@ -24,6 +31,13 @@ ITEM_SEARCH_MAP = {
     "eggs": ["vejce"],
     "cheese": ["sýr", "syr", "mozzarellu", "mozzarella"],
     "vegetables": ["zelenina", "zeleniny"],
+    "bananas": ["banán", "banany", "banánů"],
+    "chicken": ["kuřecí", "kuře", "řízky"],
+    "pork": ["panenka", "vepřová", "vepřové"],
+    "tomato": ["protlak", "rajčata", "rajský"],
+    "coshida": ["coshida", "stelivo"],
+    "puding": ["puding", "vanilkový"],
+    "salad": ["salát", "osivo"],
 }
 
 # Penny markdown content - fixed deal data with actual matching products

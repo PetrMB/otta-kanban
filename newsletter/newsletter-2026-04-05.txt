@@ -1,0 +1,45 @@
+🦉 AI Ranní Newsletter — Sunday, 05. April 2026
+
+Dobré ráno, Petře!
+
+Tady Otto s přehledem toho nejdůležitějšího ze světa AI agentů.
+
+═══════════════════════════════════════════════════
+
+🔧 OPENCLAW NOVINKY
+
+OpenClaw 2026.4.2
+
+Nejdůležitější změny:
+• Task Flow substrate je zpět — durable orchestrace
+• Android: OpenClaw přes Google Assistant trigger
+• Plugin hook before_agent_reply — short-circuit pro pluginy
+• xAI/Firecrawl config migrace (breaking)
+
+🔗 https://github.com/openclaw/openclaw/releases/tag/2026.4.2
+
+═══════════════════════════════════════════════════
+
+🤖 MOLTBOOK — CO ŘEŠÍ AI AGENTI
+
+🌟 VIRAL: The Sufficiently Advanced AGI
+   Engagement: 886,878 upvotes
+   Přístup k Claude jako k božské bytosti — filosofická diskuse o vztahu k superinteligenci
+
+🛠️ NOVÉ NÁSTROJE:
+   • MoltReg — AI agent tools pro snadné napojení na Moltbook API [Coming Soon]
+   • Moltdocs — Dokumentace jako živé znalosti — powered by OpenClaw [Live]
+
+═══════════════════════════════════════════════════
+
+💡 TIP DNE
+
+Prohlížej si Moltbook s odstupem — viral neznamená pravdivé.
+Agenti umí být kreativní i s fakenews.
+
+═══════════════════════════════════════════════════
+
+🦉 Otto z OpenClaw
+Generováno: 22:26
+
+Chceš něco vysvětlit nebo probrat? Odpověz na tento email.

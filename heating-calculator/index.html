@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tepelné čerpadlo vs. Elektrokotel – Kalkulačka</title>
+    <style>
+        :root {
+            --bg: #0f1117; --card: #1a1d27; --card-alt: #222636; --border: #2d3348;
+            --accent: #4f8cff; --accent2: #ff6b6b; --green: #4ecdc4;
+            --text: #e4e7f1; --text-dim: #8892a8;
+            --hp-color: #4f8cff; --ek-color: #ff6b6b;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; min-height: 100vh; }
+        .container { max-width: 960px; margin: 0 auto; padding: 20px 16px 60px; }
+        header { text-align: center; padding: 32px 0 24px; }
+        header h1 { font-size: 1.8rem; font-weight: 700; background: linear-gradient(135deg, var(--hp-color), var(--green)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 6px; }
+        header p { color: var(--text-dim); font-size: 0.95rem; }
+        .badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; margin: 0 4px; }
+        .badge-hp { background: rgba(79,140,255,0.15); color: var(--hp-color); }
+        .badge-ek { background: rgba(255,107,107,0.15); color: var(--ek-color); }
+        .card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 24px; margin-bottom: 20px; }
+        .card h2 { font-size: 1.15rem; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+        .card h2 .icon { font-size: 1.3rem; }
+        .input-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+        @media (max-width: 600px) { .input-grid { grid-template-columns: 1fr; } }
+        .field { display: flex; flex-direction: column; gap: 4px; }
+        .field label { font-size: 0.82rem; color: var(--text-dim); font-weight: 500; }
+        .field input, .field select { background: var(--card-alt); border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; color: var(--text); font-size: 0.95rem; font-family: inherit; outline: none; transition: border-color 0.2s; }
+        .field input:focus, .field select:focus { border-color: var(--accent); }
+        .field .unit { font-size: 0.75rem; color: var(--text-dim); }
+        .vs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px; }
+        @media (max-width: 600px) { .vs-grid { grid-template-columns: 1fr; } }
+        .vs-col { background: var(--card-alt); border-radius: 12px; padding: 18px; border-top: 3px solid var(--border); }
+        .vs-col.hp { border-top-color: var(--hp-color); }
+        .vs-col.ek { border-top-color: var(--ek-color); }
+        .vs-col h3 { font-size: 1rem; margin-bottom: 14px; display: flex; align-items: center; gap: 6px; }
+        .vs-col .field { margin-bottom: 10px; }
+        .result-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        @media (max-width: 600px) { .result-grid { grid-template-columns: 1fr; } }
+        .result-box { background: var(--card-alt); border-radius: 12px; padding: 20px; text-align: center; border-top: 3px solid var(--border); }
+        .result-box.hp { border-top-color: var(--hp-color); }
+        .result-box.ek { border-top-color: var(--ek-color); }
+        .result-box .label { font-size: 0.82rem; color: var(--text-dim); margin-bottom: 6px; }
+        .result-box .value { font-size: 1.6rem; font-weight: 700; }
+        .result-box.hp .value { color: var(--hp-color); }
+        .result-box.ek .value { color: var(--ek-color); }
+        .result-box .sub { font-size: 0.78rem; color: var(--text-dim); margin-top: 4px; }
+        .verdict { text-align: center; padding: 24px; background: linear-gradient(135deg, rgba(79,140,255,0.08), rgba(78,205,196,0.08)); border: 1px solid var(--border); border-radius: 14px; margin-bottom: 20px; }
+        .verdict .emoji { font-size: 2rem; margin-bottom: 8px; }
+        .verdict .msg { font-size: 1.05rem; font-weight: 600; }
+        .verdict .detail { font-size: 0.85rem; color: var(--text-dim); margin-top: 6px; }
+        .chart-container { position: relative; width: 100%; height: 320px; margin-top: 8px; }
+        canvas { width: 100% !important; height: 100% !important; }
+        .breakdown { width: 100%; border-collapse: collapse; font-size: 0.88rem; margin-top: 12px; }
+        .breakdown th, .breakdown td { padding: 10px 12px; text-align: left; border-bottom: 1px solid var(--border); }
+        .breakdown th { color: var(--text-dim); font-weight: 500; font-size: 0.8rem; }
+        .breakdown td.num { text-align: right; font-variant-numeric: tabular-nums; }
+        .breakdown tr:last-child td { border-bottom: none; }
+        .breakdown .winner { font-weight: 600; }
+        .breakdown .hp-winner { color: var(--hp-color); }
+        .breakdown .ek-winner { color: var(--ek-color); }
+        footer { text-align: center; padding: 24px 0; color: var(--text-dim); font-size: 0.78rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+        .presets { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
+        .preset-btn { background: var(--card-alt); border: 1px solid var(--border); border-radius: 8px; padding: 6px 14px; color: var(--text); font-size: 0.82rem; cursor: pointer; transition: all 0.2s; }
+        .preset-btn:hover { border-color: var(--accent); color: var(--accent); }
+        .preset-btn.active { background: rgba(79,140,255,0.15); border-color: var(--accent); color: var(--accent); }
+        .year-slider { width: 100%; margin: 12px 0; accent-color: var(--accent); }
+        .roi-highlight { font-weight: 700; color: var(--hp-color); }
+        .year-display { text-align: center; font-size: 1.4rem; font-weight: 700; color: var(--accent); }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>🏠 Tepelné čerpadlo vs. Elektrokotel</h1>
+        <p>Porovnání nákladů na vytápění patrového domu 2 × 55 m²</p>
+        <div style="margin-top:10px">
+            <span class="badge badge-hp">❄️ Tepelné čerpadlo</span>
+            <span class="badge badge-ek">⚡ Elektrokotel</span>
+        </div>
+    </header>
+
+    <div class="card">
+        <h2><span class="icon">🏠</span> Dům a spotřeba tepla</h2>
+        <div class="presets">
+            <button class="preset-btn" onclick="applyPreset('novostavba')">Novostavba</button>
+            <button class="preset-btn" onclick="applyPreset('zatepleny')">Zateplený dům</button>
+            <button class="preset-btn active" onclick="applyPreset('stara')">Starší dům</button>
+            <button class="preset-btn" onclick="applyPreset('nezatepleny')">Nezateplený</button>
+        </div>
+        <div class="input-grid">
+            <div class="field"><label>Podlaží 1 (plocha)</label><input type="number" id="area1" value="55" min="10" step="1"><span class="unit">m²</span></div>
+            <div class="field"><label>Podlaží 2 (plocha)</label><input type="number" id="area2" value="55" min="10" step="1"><span class="unit">m²</span></div>
+            <div class="field"><label>Specifická spotřeba tepla</label><input type="number" id="heatDemand" value="100" min="20" step="5"><span class="unit">kWh/m²/rok</span></div>
+            <div class="field"><label>Cena elektřiny (VT)</label><input type="number" id="elecPrice" value="5.50" min="0.5" step="0.1"><span class="unit">Kč/kWh</span></div>
+            <div class="field"><label>Cena elektřiny (NT)</label><input type="number" id="elecPriceNT" value="4.20" min="0.5" step="0.1"><span class="unit">Kč/kWh</span></div>
+            <div class="field"><label>Podíl nočního proudu</label><input type="number" id="ntShare" value="0.40" min="0" max="1" step="0.05"><span class="unit">0–1</span></div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2><span class="icon">⚙️</span> Parametry systémů</h2>
+        <div class="vs-grid">
+            <div class="vs-col hp">
+                <h3>❄️ Tepelné čerpadlo</h3>
+                <div class="field"><label>Pořizovací cena (zař.+instalace)</label><input type="number" id="hpCost" value="220000" min="50000" step="5000"><span class="unit">Kč</span></div>
+                <div class="field"><label>COP (topný faktor)</label><input type="number" id="hpCOP" value="3.5" min="1" max="7" step="0.1"><span class="unit">–</span></div>
+                <div class="field"><label>Roční údržba</label><input type="number" id="hpMaint" value="5000" min="0" step="500"><span class="unit">Kč/rok</span></div>
+                <div class="field"><label>Životnost</label><input type="number" id="hpLife" value="15" min="5" max="30" step="1"><span class="unit">let</span></div>
+            </div>
+            <div class="vs-col ek">
+                <h3>⚡ Elektrokotel</h3>
+                <div class="field"><label>Pořizovací cena (zař.+instalace)</label><input type="number" id="ekCost" value="45000" min="10000" step="5000"><span class="unit">Kč</span></div>
+                <div class="field"><label>Účinnost</label><input type="number" id="ekEff" value="0.99" min="0.8" max="1" step="0.01"><span class="unit">–</span></div>
+                <div class="field"><label>Roční údržba</label><input type="number" id="ekMaint" value="2000" min="0" step="500"><span class="unit">Kč/rok</span></div>
+                <div class="field"><label>Životnost</label><input type="number" id="ekLife" value="15" min="5" max="30" step="1"><span class="unit">let</span></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2><span class="icon">💰</span> Finanční parametry</h2>
+        <div class="input-grid">
+            <div class="field"><label>Úroková sazba úvěru</label><input type="number" id="interestRate" value="6.5" min="0" step="0.5"><span class="unit">% p.a.</span></div>
+            <div class="field"><label>Doba splácení</label><input type="number" id="loanYears" value="10" min="1" max="30" step="1"><span class="unit">let</span></div>
+            <div class="field"><label>Inflace energie</label><input type="number" id="energyInflation" value="3" min="0" step="0.5"><span class="unit">% / rok</span></div>
+            <div class="field"><label>Dotace (NZÚ)</label><input type="number" id="subsidy" value="100000" min="0" step="10000"><span class="unit">Kč</span></div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2><span class="icon">📈</span> Časový horizont</h2>
+        <div class="year-display"><span id="yearDisplay">15</span> let</div>
+        <input type="range" class="year-slider" id="horizon" min="1" max="30" value="15" oninput="document.getElementById('yearDisplay').textContent=this.value; calculate();">
+    </div>
+
+    <div class="card" id="results">
+        <h2><span class="icon">📊</span> Výsledky porovnání</h2>
+        <div class="result-grid">
+            <div class="result-box hp"><div class="label">❄️ Tepelné čerpadlo – celkem</div><div class="value" id="hpTotal">–</div><div class="sub" id="hpTotalDetail"></div></div>
+            <div class="result-box ek"><div class="label">⚡ Elektrokotel – celkem</div><div class="value" id="ekTotal">–</div><div class="sub" id="ekTotalDetail"></div></div>
+        </div>
+        <div style="margin-top:20px"><div class="result-grid">
+            <div class="result-box" id="savingsBox" style="border-top-color:var(--green);"><div class="label">💰 Úspora s TČ</div><div class="value" id="savings" style="color:var(--green);">–</div><div class="sub" id="savingsDetail"></div></div>
+            <div class="result-box" style="border-top-color:var(--accent);"><div class="label">📅 Měsíční rozdíl</div><div class="value" id="monthlyDiff" style="color:var(--accent);">–</div><div class="sub" id="monthlyDiffDetail"></div></div>
+        </div></div>
+    </div>
+
+    <div class="verdict" id="verdict">
+        <div class="emoji" id="verdictEmoji">🤔</div>
+        <div class="msg" id="verdictMsg">Počítám…</div>
+        <div class="detail" id="verdictDetail"></div>
+    </div>
+
+    <!-- ═══ NÁVRATNOST ═══ -->
+    <div class="card" id="roiCard">
+        <h2><span class="icon">🔁</span> Návratnost tepelného čerpadla</h2>
+        <div class="result-grid" style="margin-bottom:18px;">
+            <div class="result-box" style="border-top-color:var(--green);">
+                <div class="label">⏱️ Doba návratnosti</div>
+                <div class="value" id="paybackYears" style="color:var(--green);">–</div>
+                <div class="sub" id="paybackDetail"></div>
+            </div>
+            <div class="result-box" style="border-top-color:var(--accent);">
+                <div class="label">📊 Návratnost investice (ROI)</div>
+                <div class="value" id="roiPercent" style="color:var(--accent);">–</div>
+                <div class="sub" id="roiDetail"></div>
+            </div>
+        </div>
+
+        <div style="background:var(--card-alt);border-radius:12px;padding:16px;margin-bottom:14px;">
+            <div style="font-size:0.85rem;color:var(--text-dim);margin-bottom:8px;">Jak se počítá návratnost?</div>
+            <div style="font-size:0.82rem;color:var(--text-dim);line-height:1.5;">
+                <strong>Investice do TČ</strong> = pořizovací cena − dotace NZÚ<br>
+                <strong>Roční úspora provozu</strong> = náklady EK − náklady TČ na elektřinu a údržbu<br>
+                <strong>Doba návratnosti</strong> = investice ÷ roční úspora<br>
+                <strong>ROI</strong> = (celková úspora za horizont − investice) ÷ investice × 100 %<br>
+                <em>Pozn.: Úvěrové splátky nejsou součástí ROI výpočtu – jde o čistou návratnost investice.</em>
+            </div>
+        </div>
+
+        <div style="background:var(--card-alt);border-radius:12px;padding:16px;">
+            <div style="font-size:0.85rem;color:var(--text-dim);margin-bottom:8px;">📉 Vliv doby návratnosti na parametry</div>
+            <table class="breakdown" id="sensitivityTable">
+                <thead><tr>
+                    <th>COP / Účinnost</th>
+                    <th class="num">Doba návratnosti</th>
+                    <th class="num">Roční úspora</th>
+                    <th class="num">ROI za horizont</th>
+                </tr></thead>
+                <tbody id="sensitivityBody"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2><span class="icon">📉</span> Kumulativní náklady v čase</h2>
+        <div class="chart-container"><canvas id="chart"></canvas></div>
+    </div>
+
+    <div class="card">
+        <h2><span class="icon">📋</span> Detailní rozpis (1. rok)</h2>
+        <table class="breakdown"><thead><tr><th>Položka</th><th class="num" style="color:var(--hp-color)">❄️ TČ</th><th class="num" style="color:var(--ek-color)">⚡ EK</th></tr></thead><tbody id="breakdownBody"></tbody></table>
+    </div>
+
+    <footer>Kalkulačka TČ vs EK · Patrový dům 2×55 m² · <a href="https://docs.openclaw.ai" target="_blank">OpenClaw</a> · 2026</footer>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script>
+const $ = id => document.getElementById(id);
+const fmt = (n, d=0) => n.toLocaleString('cs-CZ', {minimumFractionDigits:d, maximumFractionDigits:d});
+
+const PRESETS = {
+    novostavba:  { heatDemand:50,  hpCOP:4.0, hpCost:220000, ekCost:40000, subsidy:120000 },
+    zatepleny:   { heatDemand:70,  hpCOP:3.8, hpCost:220000, ekCost:42000, subsidy:100000 },
+    stara:       { heatDemand:100, hpCOP:3.5, hpCost:250000, ekCost:45000, subsidy:100000 },
+    nezatepleny: { heatDemand:150, hpCOP:3.0, hpCost:280000, ekCost:50000, subsidy:80000  },
+};
+
+function applyPreset(name) {
+    const p = PRESETS[name];
+    $('heatDemand').value = p.heatDemand; $('hpCOP').value = p.hpCOP;
+    $('hpCost').value = p.hpCost; $('ekCost').value = p.ekCost; $('subsidy').value = p.subsidy;
+    document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+    event.target.classList.add('active');
+    calculate();
+}
+
+function v(id) { return parseFloat($(id).value) || 0; }
+
+let chartInstance = null;
+
+function calculate() {
+    const area = v('area1') + v('area2');
+    const annualHeat = area * v('heatDemand');
+    const blendedPrice = v('elecPrice') * (1 - v('ntShare')) + v('elecPriceNT') * v('ntShare');
+
+    const hpElecY1 = annualHeat / v('hpCOP');
+    const ekElecY1 = annualHeat / v('ekEff');
+    const hpOpY1 = hpElecY1 * blendedPrice + v('hpMaint');
+    const ekOpY1 = ekElecY1 * blendedPrice + v('ekMaint');
+
+    const hpNet = Math.max(0, v('hpCost') - v('subsidy'));
+    const ekNet = v('ekCost');
+    const rate = v('interestRate') / 100;
+    const loanY = v('loanYears');
+    const infl = v('energyInflation') / 100;
+    const horizon = parseInt($('horizon').value);
+
+    function annuity(P, r, y) {
+        if (r === 0) return P / y;
+        const m = r / 12, n = y * 12;
+        return P * (m * Math.pow(1+m,n)) / (Math.pow(1+m,n) - 1);
+    }
+
+    const hpLoanA = annuity(hpNet, rate, loanY) * 12;
+    const ekLoanA = annuity(ekNet, rate, loanY) * 12;
+
+    const hpC = [], ekC = [];
+    let hS = 0, eS = 0;
+    for (let y = 1; y <= horizon; y++) {
+        const f = Math.pow(1 + infl, y - 1);
+        hS += (y <= loanY ? hpLoanA : 0) + hpOpY1 * f;
+        eS += (y <= loanY ? ekLoanA : 0) + ekOpY1 * f;
+        hpC.push(Math.round(hS));
+        ekC.push(Math.round(eS));
+    }
+
+    $('hpTotal').textContent = fmt(hpC[horizon-1]) + ' Kč';
+    $('ekTotal').textContent = fmt(ekC[horizon-1]) + ' Kč';
+    $('hpTotalDetail').textContent = fmt(hpElecY1) + ' kWh el./rok · údržba ' + fmt(v('hpMaint')) + ' Kč';
+    $('ekTotalDetail').textContent = fmt(ekElecY1) + ' kWh el./rok · údržba ' + fmt(v('ekMaint')) + ' Kč';
+
+    const sav = ekC[horizon-1] - hpC[horizon-1];
+    const savPct = ekC[horizon-1] > 0 ? sav / ekC[horizon-1] * 100 : 0;
+
+    if (sav >= 0) {
+        $('savings').textContent = fmt(sav) + ' Kč';
+        $('savingsDetail').textContent = savPct.toFixed(1) + ' % úspora za ' + horizon + ' let';
+        $('savingsBox').style.borderTopColor = 'var(--green)';
+        $('savings').style.color = 'var(--green)';
+    } else {
+        $('savings').textContent = '−' + fmt(Math.abs(sav)) + ' Kč';
+        $('savingsDetail').textContent = 'TČ je dražší o ' + Math.abs(savPct).toFixed(1) + ' %';
+        $('savingsBox').style.borderTopColor = 'var(--ek-color)';
+        $('savings').style.color = 'var(--ek-color)';
+    }
+
+    const mo = sav / (horizon * 12);
+    $('monthlyDiff').textContent = (mo >= 0 ? '+' : '') + fmt(mo) + ' Kč';
+    $('monthlyDiffDetail').textContent = 'průměr za měsíc';
+
+    // Payback & ROI
+    const hpInvest = Math.max(0, v('hpCost') - v('subsidy'));
+    const hpOpY1noLoan = hpElecY1 * blendedPrice + v('hpMaint');
+    const ekOpY1noLoan = ekElecY1 * blendedPrice + v('ekMaint');
+    const annualSavings = ekOpY1noLoan - hpOpY1noLoan;
+
+    if (annualSavings > 0) {
+        const payback = hpInvest / annualSavings;
+        const paybackY = Math.floor(payback);
+        const paybackM = Math.round((payback - paybackY) * 12);
+        $('paybackYears').textContent = paybackY + ' let ' + paybackM + ' měs.';
+        $('paybackDetail').textContent = 'Investice ' + fmt(hpInvest) + ' Kč ÷ úspora ' + fmt(Math.round(annualSavings)) + ' Kč/rok';
+    } else {
+        $('paybackYears').textContent = 'Nevratí se';
+        $('paybackDetail').textContent = 'TČ má vyšší provozní náklady než EK';
+        $('paybackYears').style.color = 'var(--ek-color)';
+    }
+
+    const roiNet = sav - hpInvest;
+    const roiPct = hpInvest > 0 ? (roiNet / hpInvest * 100) : 0;
+    $('roiPercent').textContent = (roiPct >= 0 ? '+' : '') + roiPct.toFixed(1) + ' %';
+    $('roiDetail').textContent = 'za ' + horizon + ' let (investice ' + fmt(hpInvest) + ' Kč)';
+    if (roiPct >= 0) $('roiPercent').style.color = 'var(--green)'; else $('roiPercent').style.color = 'var(--ek-color)';
+
+    // Sensitivity table
+    const copValues = [2.5, 3.0, 3.5, 4.0, 4.5, 5.0];
+    const sBody = $('sensitivityBody');
+    sBody.innerHTML = '';
+    copValues.forEach(cop => {
+        const hpE = annualHeat / cop;
+        const hpOp = hpE * blendedPrice + v('hpMaint');
+        const ekOp = ekElecY1 * blendedPrice + v('ekMaint'); // ekEff remains same
+        const aSave = ekOp - hpOp;
+        const pb = aSave > 0 ? hpInvest / aSave : 999;
+        let totalSave = 0;
+        for (let y = 1; y <= horizon; y++) totalSave += aSave * Math.pow(1 + infl, y - 1);
+        const roi = hpInvest > 0 ? (totalSave - hpInvest) / hpInvest * 100 : 0;
+        const highlight = Math.abs(cop - v('hpCOP')) < 0.01;
+        const tr = document.createElement('tr');
+        tr.innerHTML = '<td' + (highlight ? ' style="font-weight:700;color:var(--hp-color)"' : '') + '>' + cop.toFixed(1) + '</td>' +
+            '<td class="num"' + (highlight ? ' style="font-weight:700;color:var(--hp-color)"' : '') + '>' + (pb < 99 ? (Math.floor(pb) + ' r ' + Math.round((pb - Math.floor(pb)) * 12) + ' m') : '–') + '</td>' +
+            '<td class="num">' + fmt(Math.round(aSave)) + ' Kč</td>' +
+            '<td class="num"' + (roi >= 0 ? ' style="color:var(--green)"' : ' style="color:var(--ek-color)"') + '>' + (roi >= 0 ? '+' : '') + roi.toFixed(0) + '%</td>';
+        sBody.appendChild(tr);
+    });
+
+    let beYear = null;
+    for (let y = 0; y < horizon; y++) { if (hpC[y] <= ekC[y]) { beYear = y + 1; break; } }
+
+    if (sav > 0) {
+        $('verdictEmoji').textContent = '❄️';
+        $('verdictMsg').textContent = 'Tepelné čerpadlo se vyplatí!';
+        $('verdictDetail').textContent = beYear
+            ? 'Návratnost za ' + beYear + (beYear===1?' rok':beYear<5?' roky':' let') + '. Za ' + horizon + ' let ušetříte ' + fmt(sav) + ' Kč.'
+            : 'Za ' + horizon + ' let ušetříte ' + fmt(sav) + ' Kč.';
+    } else {
+        $('verdictEmoji').textContent = '⚡';
+        $('verdictMsg').textContent = 'Elektrokotel je levnější';
+        $('verdictDetail').textContent = 'Za ' + horizon + ' let je TČ dražší o ' + fmt(Math.abs(sav)) + ' Kč. Zvažte delší horizont nebo dotace.';
+    }
+
+    // Breakdown
+    const rows = [
+        ['Pořizovací cena (po dotacích)', Math.max(0, v('hpCost') - v('subsidy')), ekNet],
+        ['Roční splátka úvěru', hpLoanA, ekLoanA],
+        ['Spotřeba elektřiny', hpElecY1, ekElecY1, ' kWh'],
+        ['Náklady na el. (1. rok)', hpElecY1 * blendedPrice, ekElecY1 * blendedPrice],
+        ['Údržba (1. rok)', v('hpMaint'), v('ekMaint')],
+        ['Provoz celkem (1. rok)', hpOpY1, ekOpY1],
+        ['Rok 1 celkem (splátka+provoz)', hpLoanA + hpOpY1, ekLoanA + ekOpY1],
+        ['Celkem za ' + horizon + ' let', hpC[horizon-1], ekC[horizon-1]],
+    ];
+    const body = $('breakdownBody');
+    body.innerHTML = '';
+    rows.forEach(([label, hp, ek, suf]) => {
+        const s = suf || ' Kč';
+        const hw = hp < ek, ew = ek < hp;
+        const tr = document.createElement('tr');
+        tr.innerHTML = '<td>' + label + '</td><td class="num ' + (hw?'winner hp-winner':'') + '">' + fmt(Math.round(hp)) + s + '</td><td class="num ' + (ew?'winner ek-winner':'') + '">' + fmt(Math.round(ek)) + s + '</td>';
+        body.appendChild(tr);
+    });
+
+    // Chart
+    const labels = Array.from({length: horizon}, (_, i) => i + 1);
+    const data = {
+        labels,
+        datasets: [
+            { label: '❄️ Tepelné čerpadlo', data: hpC, borderColor: '#4f8cff', backgroundColor: 'rgba(79,140,255,0.1)', fill: true, tension: 0.3, pointRadius: 0 },
+            { label: '⚡ Elektrokotel', data: ekC, borderColor: '#ff6b6b', backgroundColor: 'rgba(255,107,107,0.1)', fill: true, tension: 0.3, pointRadius: 0 },
+        ]
+    };
+    if (chartInstance) { chartInstance.data = data; chartInstance.update(); }
+    else {
+        chartInstance = new Chart($('chart'), {
+            type: 'line', data,
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                interaction: { intersect: false, mode: 'index' },
+                plugins: {
+                    legend: { labels: { color: '#8892a8', font: { size: 13 } } },
+                    tooltip: {
+                        backgroundColor: '#1a1d27', borderColor: '#2d3348', borderWidth: 1,
+                        titleColor: '#e4e7f1', bodyColor: '#8892a8',
+                        callbacks: { label: ctx => ctx.dataset.label + ': ' + fmt(ctx.parsed.y) + ' Kč' }
+                    }
+                },
+                scales: {
+                    x: { title: { display: true, text: 'Rok', color: '#8892a8' }, grid: { color: '#1e2230' }, ticks: { color: '#8892a8' } },
+                    y: { title: { display: true, text: 'Kumulativní náklady (Kč)', color: '#8892a8' }, grid: { color: '#1e2230' }, ticks: { color: '#8892a8', callback: v => fmt(v) } }
+                }
+            }
+        });
+    }
+}
+
+// Auto-calculate on input change
+document.querySelectorAll('input[type="number"]').forEach(el => el.addEventListener('input', calculate));
+
+// Initial calc
+calculate();
+</script>
+</body>
+</html>

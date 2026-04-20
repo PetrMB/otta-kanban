@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>R2D2 Cockpit — OpenClaw</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] },
+                    colors: {
+                        cockpit: { bg: '#0a1512', card: '#0f1e1a', border: 'rgba(6,78,59,0.4)' }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background: #0a1512; }
+        .sidebar-item { transition: color 0.15s, background 0.15s; }
+        .sidebar-item:hover { color: #34d399; background: rgba(52,211,153,0.08); }
+        .feature-card { transition: border-color 0.2s; }
+        .feature-card:hover { border-color: rgba(52,211,153,0.5); }
+        @media (max-width: 1023px) {
+            .sidebar-label { display: none; }
+            .sidebar { width: 64px !important; min-width: 64px !important; }
+            .sidebar-section-title { display: none; }
+            .sidebar-user { display: none; }
+        }
+        @media (max-width: 767px) {
+            .sidebar { display: none; }
+            .mobile-toggle { display: flex !important; }
+            .sidebar.open { display: flex; position: fixed; z-index: 50; width: 260px; }
+        }
+    </style>
+</head>
+<body class="font-sans text-slate-100 antialiased min-h-screen">
+    <!-- Mobile toggle -->
+    <button class="mobile-toggle hidden fixed top-4 left-4 z-50 p-2 rounded-lg border border-emerald-900/40 bg-cockpit-card text-emerald-400" onclick="document.getElementById('sidebar').classList.toggle('open')">
+        <i data-lucide="menu" class="w-5 h-5"></i>
+    </button>
+
+    <div class="grid grid-cols-[260px_1fr] min-h-screen">
+        <!-- ═══ SIDEBAR ═══ -->
+        <aside id="sidebar" class="sidebar flex flex-col border-r border-emerald-900/30 bg-cockpit-bg" style="width:260px;min-width:260px">
+            <!-- Header -->
+            <div class="flex items-center gap-3 p-5 border-b border-emerald-900/30">
+                <div class="w-9 h-9 rounded-full border border-emerald-500/60 flex items-center justify-center">
+                    <i data-lucide="bot" class="w-4 h-4 text-emerald-400"></i>
+                </div>
+                <div>
+                    <div class="text-xl font-bold text-emerald-400">R2D2</div>
+                    <div class="text-[10px] text-slate-400 tracking-wider">Cockpit</div>
+                </div>
+            </div>
+
+            <!-- Navigation -->
+            <nav class="flex-1 overflow-y-auto py-4 px-3 space-y-6">
+                <!-- CORE -->
+                <div>
+                    <div class="sidebar-section-title text-[10px] tracking-[0.2em] text-slate-500 uppercase mb-2 px-2">Core</div>
+                    <ul class="space-y-0.5">
+                        <li><a href="#" class="sidebar-item flex items-center gap-3 px-2 py-1.5 rounded-lg text-emerald-400 bg-emerald-400/10"><i data-lucide="layout-dashboard" class="w-4 h-4"></i><span class="sidebar-label text-sm">Dashboard</span></a></li>
+                        <li><a href="#" class="sidebar-item flex items-center gap-3 px-2 py-1.5 rounded-lg text-slate-300"><i data-lucide="check-square" class="w-4 h-4"></i><span class="sidebar-label text-sm">Workstreams</span></a></li>
+                        <li><a href="#" class="sidebar-item flex items-center gap-3 px-2 py-1.5 rounded-lg text-slate-300"><i data-lucide="bot" class="w-4 h-4"></i><span class="sidebar-label text-sm">LLMs</span></a></li>
+                        <li><a href="#" class="sidebar-item flex items-center gap-3 px-2 py-1.5 rounded-lg text-slate-300"><i data-lucide="globe" class="w-4 h-4"></i><span class="sidebar-label text-sm">Explorer</span></a></li>
+                    </ul>
+                </div>
+
+                <!-- DEV-PIPE -->
+                <div>
+                    <div class="sidebar-section-title text-[10px] tracking-[0.2em] text-slate-500 uppercase mb-2 px-2">Dev-Pipe</div>
+                    <ul class="space-y-0.5">
+                        <li><a href="#" class="sidebar-item flex items-center gap-3 px-2 py-1.5 rounded-lg text-slate-300"><i data-lucide="lightbulb" class="w-4 h-4"></i><span class="sidebar-label text-sm">Ideas</span></a></li>
+                        <li><a href="#" class="sidebar-item flex items-center gap-3 px-2 py-1.5 rounded-lg text-slate-300"><i data-lucide="help-circle" class="w-4 h-4"></i><span class="sidebar-label text-sm">Questions</span></a></li>
+                        <li><a href="#" class="sidebar-item flex items-center gap-3 px-2 py-1.5 rounded-lg text-slate-300"><i data-lucide="wrench" class="w-4 h-4"></i><span class="sidebar-label text-sm">Development</span></a></li>
+                        <li><a href="#" class="sidebar-item flex items-center gap-3 px-2 py-1.5 rounded-lg text-slate-300"><i data-lucide="search-check" class="w-4 h-4"></i><span class="sidebar-label text-sm">Quality</span></a></li>
+                        <li><a href="#" class="sidebar-item flex items-center gap-3 px-2 py-1.5 rounded-lg text-slate-300"><i data-lucide="rocket" class="w-4 h-4"></i><span class="sidebar-label text-sm">Prod</span></a></li>
+                        <li><a href="#" class="sidebar-item flex items-center gap-3 px-2 py-1.5 rounded-lg text-slate-300"><i data-lucide="package" class="w-4 h-4"></i><span class="sidebar-label text-sm">Products</span></a></li>
+                    </ul>
+                </div>
+
+                <!-- OPERATIONS -->
+                <div>
+                    <div class="sidebar-section-title text-[10px] tracking-[0.2em] text-slate-500 uppercase mb-2 px-2">Operations</div>
+                    <ul class="space-y-0.5">
+                        <li><a href="#" class="sidebar-item flex items-center gap-3 px-2 py-1.5 rounded-lg text-slate-300"><i data-lucide="map" class="w-4 h-4"></i><span class="sidebar-label text-sm">Topology</span></a></li>
+                        <li><a href="#" class="sidebar-item flex items-center gap-3 px-2 py-1.5 rounded-lg text-slate-300"><i data-lucide="sparkles" class="w-4 h-4"></i><span class="sidebar-label text-sm">Housekeeping</span></a></li>
+                        <li><a href="#" class="sidebar-item flex items-center gap-3 px-2 py-1.5 rounded-lg text-slate-300"><i data-lucide="heart-pulse" class="w-4 h-4"></i><span class="sidebar-label text-sm">HealthCheck</span></a></li>
+                        <li><a href="#" class="sidebar-item flex items-center gap-3 px-2 py-1.5 rounded-lg text-slate-300"><i data-lucide="clock" class="w-4 h-4"></i><span class="sidebar-label text-sm">Cron Jobs</span></a></li>
+                        <li><a href="#" class="sidebar-item flex items-center gap-3 px-2 py-1.5 rounded-lg text-slate-300"><i data-lucide="upload" class="w-4 h-4"></i><span class="sidebar-label text-sm">Uploads</span></a></li>
+                        <li><a href="#" class="sidebar-item flex items-center gap-3 px-2 py-1.5 rounded-lg text-slate-300"><i data-lucide="book-open" class="w-4 h-4"></i><span class="sidebar-label text-sm">Wiki</span></a></li>
+                        <li><a href="#" class="sidebar-item flex items-center gap-3 px-2 py-1.5 rounded-lg text-slate-300"><i data-lucide="mail" class="w-4 h-4"></i><span class="sidebar-label text-sm">Email</span></a></li>
+                    </ul>
+                </div>
+            </nav>
+
+            <!-- User -->
+            <div class="sidebar-user border-t border-emerald-900/30 px-5 py-3">
+                <div class="text-xs text-slate-500">Honeger, Petr (FIZ)</div>
+            </div>
+        </aside>
+
+        <!-- ═══ MAIN AREA ═══ -->
+        <main class="p-6 md:p-10 overflow-y-auto">
+            <div class="max-w-6xl mx-auto rounded-2xl border border-emerald-900/40 bg-cockpit-bg p-6 md:p-10 space-y-8">
+
+                <!-- HERO -->
+                <div class="grid grid-cols-1 md:grid-cols-[1fr_auto] gap-8 items-start">
+                    <div>
+                        <div class="text-[10px] tracking-[0.2em] text-slate-500 uppercase mb-3">Special View · Executive Architecture Brief</div>
+                        <h1 class="text-4xl md:text-5xl font-bold text-white mb-3">🦞 OpenClaw</h1>
+                        <p class="text-lg text-slate-300 leading-relaxed">Self-hosted Gateway für AI Agents über Chat-Kanäle, Tools und Modelle hinweg.</p>
+                    </div>
+
+                    <!-- Architecture diagram -->
+                    <div class="flex flex-col items-center gap-2 pt-2">
+                        <div class="rounded-md border border-slate-700 px-3 py-1.5 text-xs text-slate-300 text-center">Chat Apps</div>
+                        <svg width="2" height="20" class="text-slate-600"><line x1="1" y1="0" x2="1" y2="20" stroke="currentColor" stroke-width="1.5"/></svg>
+                        <div class="rounded-md border border-emerald-400 px-3 py-1.5 text-xs text-emerald-400 text-center font-semibold">🦞 OpenClaw</div>
+                        <svg width="2" height="20" class="text-slate-600"><line x1="1" y1="0" x2="1" y2="20" stroke="currentColor" stroke-width="1.5"/></svg>
+                        <div class="flex gap-2">
+                            <div class="rounded-md border border-slate-700 px-3 py-1.5 text-xs text-slate-300">Agents</div>
+                            <div class="rounded-md border border-slate-700 px-3 py-1.5 text-xs text-slate-300">Tools</div>
+                            <div class="rounded-md border border-slate-700 px-3 py-1.5 text-xs text-slate-300">Models</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAG CHIPS -->
+                <div class="flex flex-wrap gap-2">
+                    <span class="rounded-full border border-emerald-500/60 text-emerald-400 text-sm px-3 py-1">Self-hosted</span>
+                    <span class="rounded-full border border-emerald-500/60 text-emerald-400 text-sm px-3 py-1">Multi-Channel</span>
+                    <span class="rounded-full border border-emerald-500/60 text-emerald-400 text-sm px-3 py-1">Agent-Native</span>
+                    <span class="rounded-full border border-emerald-500/60 text-emerald-400 text-sm px-3 py-1">Open Source</span>
+                    <span class="rounded-full border border-emerald-500/60 text-emerald-400 text-sm px-3 py-1">Model-Agnostic</span>
+                </div>
+
+                <!-- FEATURE GRID -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+                    <!-- Multi-Channel -->
+                    <div class="feature-card rounded-xl border border-emerald-900/40 bg-cockpit-card p-5 space-y-3">
+                        <i data-lucide="message-square" class="w-6 h-6 text-emerald-400"></i>
+                        <h3 class="font-semibold text-base text-white">Multi-Channel</h3>
+                        <p class="text-sm text-slate-400 leading-relaxed">Matrix, Signal, Telegram, WhatsApp, Discord, Teams, Slack, iMessage — ein Gateway, viele Kanäle.</p>
+                    </div>
+
+                    <!-- Agent-Native -->
+                    <div class="feature-card rounded-xl border border-emerald-900/40 bg-cockpit-card p-5 space-y-3">
+                        <i data-lucide="cpu" class="w-6 h-6 text-emerald-400"></i>
+                        <h3 class="font-semibold text-base text-white">Agent-Native</h3>
+                        <p class="text-sm text-slate-400 leading-relaxed">Sessions, Memory, Tool-Use, Routing, Sub-Agents — gebaut für agentengerechte Interaktion.</p>
+                    </div>
+
+                    <!-- Self-Hosted -->
+                    <div class="feature-card rounded-xl border border-emerald-900/40 bg-cockpit-card p-5 space-y-3">
+                        <i data-lucide="home" class="w-6 h-6 text-emerald-400"></i>
+                        <h3 class="font-semibold text-base text-white">Self-Hosted</h3>
+                        <p class="text-sm text-slate-400 leading-relaxed">Volle Kontrolle über Betrieb, Datenfluss und Integrationen. Kein Cloud-Zwang.</p>
+                    </div>
+
+                    <!-- Open -->
+                    <div class="feature-card rounded-xl border border-emerald-900/40 bg-cockpit-card p-5 space-y-3">
+                        <i data-lucide="unlock" class="w-6 h-6 text-emerald-400"></i>
+                        <h3 class="font-semibold text-base text-white">Open</h3>
+                        <p class="text-sm text-slate-400 leading-relaxed">MIT-Lizenz, Community-driven, model-agnostic. Kein Vendor-Lock-in.</p>
+                    </div>
+                </div>
+
+                <!-- IST / NICHT -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- IST -->
+                    <div class="rounded-xl border border-emerald-900/40 bg-cockpit-card p-6 space-y-4">
+                        <h3 class="text-xs tracking-[0.15em] uppercase text-emerald-400 font-semibold">✓ IST</h3>
+                        <ul class="space-y-2.5">
+                            <li class="flex items-start gap-2 text-sm text-slate-300"><span class="text-emerald-400 mt-0.5 shrink-0">▸</span>Gateway für AI Agents in Chat-Umgebungen</li>
+                            <li class="flex items-start gap-2 text-sm text-slate-300"><span class="text-emerald-400 mt-0.5 shrink-0">▸</span>Ein Prozess für viele Kanäle gleichzeitig</li>
+                            <li class="flex items-start gap-2 text-sm text-slate-300"><span class="text-emerald-400 mt-0.5 shrink-0">▸</span>Routing-Layer für Modelle, Tools und Sub-Agents</li>
+                            <li class="flex items-start gap-2 text-sm text-slate-300"><span class="text-emerald-400 mt-0.5 shrink-0">▸</span>Erweiterbar über Skills, Automation und ACP</li>
+                            <li class="flex items-start gap-2 text-sm text-slate-300"><span class="text-emerald-400 mt-0.5 shrink-0">▸</span>Open Source und selbst hostbar</li>
+                        </ul>
+                    </div>
+
+                    <!-- NICHT -->
+                    <div class="rounded-xl border border-emerald-900/40 bg-cockpit-card p-6 space-y-4">
+                        <h3 class="text-xs tracking-[0.15em] uppercase text-slate-500 font-semibold">✗ NICHT</h3>
+                        <ul class="space-y-2.5">
+                            <li class="flex items-start gap-2 text-sm text-slate-500"><span class="text-rose-400 mt-0.5 shrink-0">✗</span>Kein ChatGPT-Klon</li>
+                            <li class="flex items-start gap-2 text-sm text-slate-500"><span class="text-rose-400 mt-0.5 shrink-0">✗</span>Kein gehosteter Consumer-Service</li>
+                            <li class="flex items-start gap-2 text-sm text-slate-500"><span class="text-rose-400 mt-0.5 shrink-0">✗</span>Kein einzelnes Modell</li>
+                            <li class="flex items-start gap-2 text-sm text-slate-500"><span class="text-rose-400 mt-0.5 shrink-0">✗</span>Kein klassisches Chatbot-Framework</li>
+                            <li class="flex items-start gap-2 text-sm text-slate-500"><span class="text-rose-400 mt-0.5 shrink-0">✗</span>Kein Enterprise SaaS</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- FOOTER BANNER -->
+                <div class="rounded-xl border border-emerald-500/30 bg-emerald-950/40 py-5 text-center">
+                    <p class="text-xl font-semibold text-emerald-400">One gateway process. Many channels. Many agents. Full control.</p>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>

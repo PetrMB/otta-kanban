@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>R2D2 Cockpit — OpenClaw</title>
+    <title>OTTO Cockpit</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -14,7 +14,14 @@
                 extend: {
                     fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] },
                     colors: {
-                        cockpit: { bg: '#0a1512', card: '#0f1e1a', border: 'rgba(6,78,59,0.4)' }
+                        otto: {
+                            bg: '#0a1512',
+                            card: '#0f1e1a',
+                            surface: '#132923',
+                            border: 'rgba(6,78,59,0.4)',
+                            accent: '#34d399',
+                            accentDim: '#065f46',
+                        }
                     }
                 }
             }
@@ -24,188 +31,368 @@
         body { background: #0a1512; }
         .sidebar-item { transition: color 0.15s, background 0.15s; }
         .sidebar-item:hover { color: #34d399; background: rgba(52,211,153,0.08); }
-        .feature-card { transition: border-color 0.2s; }
-        .feature-card:hover { border-color: rgba(52,211,153,0.5); }
+        .sidebar-item.active { color: #34d399; background: rgba(52,211,153,0.12); }
+        .card-hover { transition: border-color 0.2s, box-shadow 0.2s; }
+        .card-hover:hover { border-color: rgba(52,211,153,0.5); }
+        .badge { transition: background 0.15s; }
+        .badge:hover { background: rgba(52,211,153,0.15); }
+        .feed-item { transition: background 0.15s; }
+        .feed-item:hover { background: rgba(52,211,153,0.04); }
+
+        /* Resizable sidebar */
+        .sidebar { resize: horizontal; overflow: hidden; min-width: 220px; max-width: 320px; }
+        .sidebar::-webkit-resizer { background: transparent; border-right: 2px solid rgba(52,211,153,0.2); cursor: col-resize; }
+
+        /* Mobile bottom bar */
         @media (max-width: 1023px) {
             .sidebar-label { display: none; }
-            .sidebar { width: 64px !important; min-width: 64px !important; }
-            .sidebar-section-title { display: none; }
-            .sidebar-user { display: none; }
+            .sidebar { width: 64px !important; min-width: 64px !important; max-width: 64px !important; resize: none !important; }
+            .sidebar-section-title, .sidebar-user, .sidebar-header-text { display: none; }
+            .sidebar-header-icon { margin: 0 auto; }
         }
         @media (max-width: 767px) {
             .sidebar { display: none; }
-            .mobile-toggle { display: flex !important; }
-            .sidebar.open { display: flex; position: fixed; z-index: 50; width: 260px; }
+            .mobile-bar { display: flex !important; }
         }
+        @media (min-width: 768px) { .mobile-bar { display: none !important; } }
+
+        /* Avatar */
+        .avatar { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 12px; }
+        .avatar-sm { width: 20px; height: 20px; font-size: 10px; }
     </style>
 </head>
 <body class="font-sans text-slate-100 antialiased min-h-screen">
-    <!-- Mobile toggle -->
-    <button class="mobile-toggle hidden fixed top-4 left-4 z-50 p-2 rounded-lg border border-emerald-900/40 bg-cockpit-card text-emerald-400" onclick="document.getElementById('sidebar').classList.toggle('open')">
-        <i data-lucide="menu" class="w-5 h-5"></i>
-    </button>
-
     <div class="grid grid-cols-[260px_1fr] min-h-screen">
+
         <!-- ═══ SIDEBAR ═══ -->
-        <aside id="sidebar" class="sidebar flex flex-col border-r border-emerald-900/30 bg-cockpit-bg" style="width:260px;min-width:260px">
+        <aside class="sidebar flex flex-col border-r border-emerald-900/30 bg-otto-bg" style="width:260px">
             <!-- Header -->
-            <div class="flex items-center gap-3 p-5 border-b border-emerald-900/30">
-                <div class="w-9 h-9 rounded-full border border-emerald-500/60 flex items-center justify-center">
-                    <i data-lucide="bot" class="w-4 h-4 text-emerald-400"></i>
+            <div class="flex items-center gap-3 p-4 border-b border-emerald-900/30">
+                <div class="sidebar-header-icon w-8 h-8 rounded-lg bg-emerald-400/20 flex items-center justify-center shrink-0">
+                    <span class="text-base">🦉</span>
                 </div>
-                <div>
-                    <div class="text-xl font-bold text-emerald-400">R2D2</div>
-                    <div class="text-[10px] text-slate-400 tracking-wider">Cockpit</div>
+                <div class="sidebar-header-text">
+                    <div class="text-lg font-bold text-emerald-400 leading-tight">OTTO</div>
+                    <div class="text-[10px] text-slate-500 tracking-wider">Cockpit</div>
+                </div>
+            </div>
+
+            <!-- Account switcher -->
+            <div class="sidebar-header-text px-4 pt-3 pb-1">
+                <div class="flex items-center gap-2 px-2 py-1.5 rounded-lg hover:bg-otto-surface cursor-pointer transition-colors">
+                    <div class="avatar bg-emerald-400/20 text-emerald-400">PH</div>
+                    <div class="flex-1 min-w-0">
+                        <div class="text-xs font-medium text-slate-200 truncate">Petr Honeger</div>
+                        <div class="text-[10px] text-slate-500 truncate">Pro · MacKulna</div>
+                    </div>
+                    <i data-lucide="chevrons-up-down" class="w-3 h-3 text-slate-500 shrink-0"></i>
                 </div>
             </div>
 
             <!-- Navigation -->
-            <nav class="flex-1 overflow-y-auto py-4 px-3 space-y-6">
-                <!-- CORE -->
+            <nav class="flex-1 overflow-y-auto py-3 px-3 space-y-5">
                 <div>
-                    <div class="sidebar-section-title text-[10px] tracking-[0.2em] text-slate-500 uppercase mb-2 px-2">Core</div>
+                    <div class="sidebar-section-title text-[10px] tracking-[0.2em] text-slate-600 uppercase mb-1.5 px-2">Přehled</div>
                     <ul class="space-y-0.5">
-                        <li><a href="#" class="sidebar-item flex items-center gap-3 px-2 py-1.5 rounded-lg text-emerald-400 bg-emerald-400/10"><i data-lucide="layout-dashboard" class="w-4 h-4"></i><span class="sidebar-label text-sm">Dashboard</span></a></li>
-                        <li><a href="#" class="sidebar-item flex items-center gap-3 px-2 py-1.5 rounded-lg text-slate-300"><i data-lucide="check-square" class="w-4 h-4"></i><span class="sidebar-label text-sm">Workstreams</span></a></li>
-                        <li><a href="#" class="sidebar-item flex items-center gap-3 px-2 py-1.5 rounded-lg text-slate-300"><i data-lucide="bot" class="w-4 h-4"></i><span class="sidebar-label text-sm">LLMs</span></a></li>
-                        <li><a href="#" class="sidebar-item flex items-center gap-3 px-2 py-1.5 rounded-lg text-slate-300"><i data-lucide="globe" class="w-4 h-4"></i><span class="sidebar-label text-sm">Explorer</span></a></li>
+                        <li><a href="#" class="sidebar-item active flex items-center gap-3 px-2 py-1.5 rounded-lg"><i data-lucide="layout-dashboard" class="w-4 h-4"></i><span class="sidebar-label text-sm">Dashboard</span></a></li>
+                        <li><a href="#" class="sidebar-item flex items-center gap-3 px-2 py-1.5 rounded-lg text-slate-400"><i data-lucide="activity" class="w-4 h-4"></i><span class="sidebar-label text-sm">Aktivita</span></a></li>
+                        <li><a href="#" class="sidebar-item flex items-center gap-3 px-2 py-1.5 rounded-lg text-slate-400"><i data-lucide="bell" class="w-4 h-4"></i><span class="sidebar-label text-sm">Notifikace</span></a></li>
                     </ul>
                 </div>
 
-                <!-- DEV-PIPE -->
                 <div>
-                    <div class="sidebar-section-title text-[10px] tracking-[0.2em] text-slate-500 uppercase mb-2 px-2">Dev-Pipe</div>
+                    <div class="sidebar-section-title text-[10px] tracking-[0.2em] text-slate-600 uppercase mb-1.5 px-2">Kanály</div>
                     <ul class="space-y-0.5">
-                        <li><a href="#" class="sidebar-item flex items-center gap-3 px-2 py-1.5 rounded-lg text-slate-300"><i data-lucide="lightbulb" class="w-4 h-4"></i><span class="sidebar-label text-sm">Ideas</span></a></li>
-                        <li><a href="#" class="sidebar-item flex items-center gap-3 px-2 py-1.5 rounded-lg text-slate-300"><i data-lucide="help-circle" class="w-4 h-4"></i><span class="sidebar-label text-sm">Questions</span></a></li>
-                        <li><a href="#" class="sidebar-item flex items-center gap-3 px-2 py-1.5 rounded-lg text-slate-300"><i data-lucide="wrench" class="w-4 h-4"></i><span class="sidebar-label text-sm">Development</span></a></li>
-                        <li><a href="#" class="sidebar-item flex items-center gap-3 px-2 py-1.5 rounded-lg text-slate-300"><i data-lucide="search-check" class="w-4 h-4"></i><span class="sidebar-label text-sm">Quality</span></a></li>
-                        <li><a href="#" class="sidebar-item flex items-center gap-3 px-2 py-1.5 rounded-lg text-slate-300"><i data-lucide="rocket" class="w-4 h-4"></i><span class="sidebar-label text-sm">Prod</span></a></li>
-                        <li><a href="#" class="sidebar-item flex items-center gap-3 px-2 py-1.5 rounded-lg text-slate-300"><i data-lucide="package" class="w-4 h-4"></i><span class="sidebar-label text-sm">Products</span></a></li>
+                        <li><a href="#" class="sidebar-item flex items-center gap-3 px-2 py-1.5 rounded-lg text-slate-400"><i data-lucide="message-square" class="w-4 h-4"></i><span class="sidebar-label text-sm">iMessage</span><span class="sidebar-label ml-auto text-[10px] bg-emerald-400/15 text-emerald-400 px-1.5 rounded-full">ON</span></a></li>
+                        <li><a href="#" class="sidebar-item flex items-center gap-3 px-2 py-1.5 rounded-lg text-slate-400"><i data-lucide="smartphone" class="w-4 h-4"></i><span class="sidebar-label text-sm">WhatsApp</span><span class="sidebar-label ml-auto text-[10px] bg-amber-400/15 text-amber-400 px-1.5 rounded-full">499</span></a></li>
+                        <li><a href="#" class="sidebar-item flex items-center gap-3 px-2 py-1.5 rounded-lg text-slate-400"><i data-lucide="mail" class="w-4 h-4"></i><span class="sidebar-label text-sm">Email</span><span class="sidebar-label ml-auto text-[10px] bg-emerald-400/15 text-emerald-400 px-1.5 rounded-full">ON</span></a></li>
+                        <li><a href="#" class="sidebar-item flex items-center gap-3 px-2 py-1.5 rounded-lg text-slate-400"><i data-lucide="hash" class="w-4 h-4"></i><span class="sidebar-label text-sm">Discord</span><span class="sidebar-label ml-auto text-[10px] bg-slate-600/30 text-slate-500 px-1.5 rounded-full">OFF</span></a></li>
                     </ul>
                 </div>
 
-                <!-- OPERATIONS -->
                 <div>
-                    <div class="sidebar-section-title text-[10px] tracking-[0.2em] text-slate-500 uppercase mb-2 px-2">Operations</div>
+                    <div class="sidebar-section-title text-[10px] tracking-[0.2em] text-slate-600 uppercase mb-1.5 px-2">Agenti</div>
                     <ul class="space-y-0.5">
-                        <li><a href="#" class="sidebar-item flex items-center gap-3 px-2 py-1.5 rounded-lg text-slate-300"><i data-lucide="map" class="w-4 h-4"></i><span class="sidebar-label text-sm">Topology</span></a></li>
-                        <li><a href="#" class="sidebar-item flex items-center gap-3 px-2 py-1.5 rounded-lg text-slate-300"><i data-lucide="sparkles" class="w-4 h-4"></i><span class="sidebar-label text-sm">Housekeeping</span></a></li>
-                        <li><a href="#" class="sidebar-item flex items-center gap-3 px-2 py-1.5 rounded-lg text-slate-300"><i data-lucide="heart-pulse" class="w-4 h-4"></i><span class="sidebar-label text-sm">HealthCheck</span></a></li>
-                        <li><a href="#" class="sidebar-item flex items-center gap-3 px-2 py-1.5 rounded-lg text-slate-300"><i data-lucide="clock" class="w-4 h-4"></i><span class="sidebar-label text-sm">Cron Jobs</span></a></li>
-                        <li><a href="#" class="sidebar-item flex items-center gap-3 px-2 py-1.5 rounded-lg text-slate-300"><i data-lucide="upload" class="w-4 h-4"></i><span class="sidebar-label text-sm">Uploads</span></a></li>
-                        <li><a href="#" class="sidebar-item flex items-center gap-3 px-2 py-1.5 rounded-lg text-slate-300"><i data-lucide="book-open" class="w-4 h-4"></i><span class="sidebar-label text-sm">Wiki</span></a></li>
-                        <li><a href="#" class="sidebar-item flex items-center gap-3 px-2 py-1.5 rounded-lg text-slate-300"><i data-lucide="mail" class="w-4 h-4"></i><span class="sidebar-label text-sm">Email</span></a></li>
+                        <li><a href="#" class="sidebar-item flex items-center gap-3 px-2 py-1.5 rounded-lg text-slate-400"><i data-lucide="bot" class="w-4 h-4"></i><span class="sidebar-label text-sm">OTTO (hlavní)</span><span class="sidebar-label ml-auto w-2 h-2 rounded-full bg-emerald-400"></span></a></li>
+                        <li><a href="#" class="sidebar-item flex items-center gap-3 px-2 py-1.5 rounded-lg text-slate-400"><i data-lucide="brain" class="w-4 h-4"></i><span class="sidebar-label text-sm">Anthropic</span><span class="sidebar-label ml-auto w-2 h-2 rounded-full bg-slate-600"></span></a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <div class="sidebar-section-title text-[10px] tracking-[0.2em] text-slate-600 uppercase mb-1.5 px-2">Nástroje</div>
+                    <ul class="space-y-0.5">
+                        <li><a href="#" class="sidebar-item flex items-center gap-3 px-2 py-1.5 rounded-lg text-slate-400"><i data-lucide="clock" class="w-4 h-4"></i><span class="sidebar-label text-sm">Cron Jobs</span></a></li>
+                        <li><a href="#" class="sidebar-item flex items-center gap-3 px-2 py-1.5 rounded-lg text-slate-400"><i data-lucide="database" class="w-4 h-4"></i><span class="sidebar-label text-sm">Paměť</span></a></li>
+                        <li><a href="#" class="sidebar-item flex items-center gap-3 px-2 py-1.5 rounded-lg text-slate-400"><i data-lucide="heart-pulse" class="w-4 h-4"></i><span class="sidebar-label text-sm">Health</span></a></li>
+                        <li><a href="#" class="sidebar-item flex items-center gap-3 px-2 py-1.5 rounded-lg text-slate-400"><i data-lucide="shield" class="w-4 h-4"></i><span class="sidebar-label text-sm">Zabezpečení</span></a></li>
+                        <li><a href="#" class="sidebar-item flex items-center gap-3 px-2 py-1.5 rounded-lg text-slate-400"><i data-lucide="terminal" class="w-4 h-4"></i><span class="sidebar-label text-sm">Terminal</span></a></li>
+                        <li><a href="#" class="sidebar-item flex items-center gap-3 px-2 py-1.5 rounded-lg text-slate-400"><i data-lucide="book-open" class="w-4 h-4"></i><span class="sidebar-label text-sm">Wiki</span></a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <div class="sidebar-section-title text-[10px] tracking-[0.2em] text-slate-600 uppercase mb-1.5 px-2">Projekty</div>
+                    <ul class="space-y-0.5">
+                        <li><a href="#" class="sidebar-item flex items-center gap-3 px-2 py-1.5 rounded-lg text-slate-400"><i data-lucide="flame" class="w-4 h-4"></i><span class="sidebar-label text-sm">Heating Calc</span></a></li>
+                        <li><a href="#" class="sidebar-item flex items-center gap-3 px-2 py-1.5 rounded-lg text-slate-400"><i data-lucide="shopping-cart" class="w-4 h-4"></i><span class="sidebar-label text-sm">Nákupy</span></a></li>
+                        <li><a href="#" class="sidebar-item flex items-center gap-3 px-2 py-1.5 rounded-lg text-slate-400"><i data-lucide="newspaper" class="w-4 h-4"></i><span class="sidebar-label text-sm">Newsletter</span></a></li>
                     </ul>
                 </div>
             </nav>
 
-            <!-- User -->
-            <div class="sidebar-user border-t border-emerald-900/30 px-5 py-3">
-                <div class="text-xs text-slate-500">Honeger, Petr (FIZ)</div>
+            <!-- Footer -->
+            <div class="sidebar-user border-t border-emerald-900/30 px-4 py-3">
+                <div class="flex items-center gap-2">
+                    <i data-lucide="settings" class="w-3.5 h-3.5 text-slate-500"></i>
+                    <span class="text-[10px] text-slate-500">v2026.4.12 · MacKulna</span>
+                </div>
             </div>
         </aside>
 
         <!-- ═══ MAIN AREA ═══ -->
-        <main class="p-6 md:p-10 overflow-y-auto">
-            <div class="max-w-6xl mx-auto rounded-2xl border border-emerald-900/40 bg-cockpit-bg p-6 md:p-10 space-y-8">
+        <main class="overflow-y-auto">
+            <!-- Top bar -->
+            <div class="border-b border-emerald-900/30 px-6 md:px-8 py-3 flex items-center justify-between bg-otto-bg/80 backdrop-blur sticky top-0 z-10">
+                <div class="flex items-center gap-3">
+                    <h2 class="text-sm font-semibold text-slate-200">Dashboard</h2>
+                    <span class="text-[10px] bg-emerald-400/15 text-emerald-400 px-2 py-0.5 rounded-full">● Vše běží</span>
+                </div>
+                <div class="flex items-center gap-3">
+                    <button class="p-1.5 rounded-lg hover:bg-otto-surface text-slate-400 hover:text-emerald-400 transition-colors"><i data-lucide="search" class="w-4 h-4"></i></button>
+                    <button class="p-1.5 rounded-lg hover:bg-otto-surface text-slate-400 hover:text-emerald-400 transition-colors"><i data-lucide="plus" class="w-4 h-4"></i></button>
+                </div>
+            </div>
 
-                <!-- HERO -->
-                <div class="grid grid-cols-1 md:grid-cols-[1fr_auto] gap-8 items-start">
-                    <div>
-                        <div class="text-[10px] tracking-[0.2em] text-slate-500 uppercase mb-3">Special View · Executive Architecture Brief</div>
-                        <h1 class="text-4xl md:text-5xl font-bold text-white mb-3">🦞 OpenClaw</h1>
-                        <p class="text-lg text-slate-300 leading-relaxed">Self-hosted Gateway für AI Agents über Chat-Kanäle, Tools und Modelle hinweg.</p>
-                    </div>
+            <div class="p-6 md:p-8">
+                <div class="max-w-7xl mx-auto space-y-6">
 
-                    <!-- Architecture diagram -->
-                    <div class="flex flex-col items-center gap-2 pt-2">
-                        <div class="rounded-md border border-slate-700 px-3 py-1.5 text-xs text-slate-300 text-center">Chat Apps</div>
-                        <svg width="2" height="20" class="text-slate-600"><line x1="1" y1="0" x2="1" y2="20" stroke="currentColor" stroke-width="1.5"/></svg>
-                        <div class="rounded-md border border-emerald-400 px-3 py-1.5 text-xs text-emerald-400 text-center font-semibold">🦞 OpenClaw</div>
-                        <svg width="2" height="20" class="text-slate-600"><line x1="1" y1="0" x2="1" y2="20" stroke="currentColor" stroke-width="1.5"/></svg>
-                        <div class="flex gap-2">
-                            <div class="rounded-md border border-slate-700 px-3 py-1.5 text-xs text-slate-300">Agents</div>
-                            <div class="rounded-md border border-slate-700 px-3 py-1.5 text-xs text-slate-300">Tools</div>
-                            <div class="rounded-md border border-slate-700 px-3 py-1.5 text-xs text-slate-300">Models</div>
+                    <!-- ══ HERO ══ -->
+                    <div class="grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-8 items-start">
+                        <div>
+                            <div class="text-[10px] tracking-[0.2em] text-slate-500 uppercase mb-2">Executive Overview</div>
+                            <h1 class="text-4xl md:text-5xl font-bold text-white mb-2">🦉 OTTO</h1>
+                            <p class="text-base text-slate-400 leading-relaxed max-w-lg">Self-hosted AI agent running on OpenClaw. Multi-channel, model-agnostic, always on. Jeden proces, plná kontrola.</p>
+                        </div>
+                        <!-- Architecture diagram -->
+                        <div class="flex flex-col items-center gap-1.5 pt-1">
+                            <div class="rounded-lg border border-slate-700/60 px-4 py-2 text-xs text-slate-300 text-center whitespace-nowrap">📱 Chat Kanály</div>
+                            <svg width="2" height="16"><line x1="1" y1="0" x2="1" y2="16" stroke="#334155" stroke-width="1.5"/></svg>
+                            <div class="rounded-lg border-2 border-emerald-400 px-4 py-2 text-xs text-emerald-400 text-center font-semibold whitespace-nowrap bg-emerald-400/5">🦉 OTTO</div>
+                            <svg width="2" height="16"><line x1="1" y1="0" x2="1" y2="16" stroke="#334155" stroke-width="1.5"/></svg>
+                            <div class="flex gap-2">
+                                <div class="rounded-lg border border-slate-700/60 px-3 py-1.5 text-[11px] text-slate-300">Sessions</div>
+                                <div class="rounded-lg border border-slate-700/60 px-3 py-1.5 text-[11px] text-slate-300">Skills</div>
+                                <div class="rounded-lg border border-slate-700/60 px-3 py-1.5 text-[11px] text-slate-300">LLMs</div>
+                            </div>
                         </div>
                     </div>
+
+                    <!-- ══ STATUS STRIP ══ -->
+                    <div class="flex flex-wrap gap-2">
+                        <span class="badge rounded-full border border-emerald-500/50 text-emerald-400 text-xs px-3 py-1 bg-emerald-400/5 cursor-default">Self-hosted</span>
+                        <span class="badge rounded-full border border-emerald-500/50 text-emerald-400 text-xs px-3 py-1 bg-emerald-400/5 cursor-default">Multi-Channel</span>
+                        <span class="badge rounded-full border border-emerald-500/50 text-emerald-400 text-xs px-3 py-1 bg-emerald-400/5 cursor-default">Agent-Native</span>
+                        <span class="badge rounded-full border border-emerald-500/50 text-emerald-400 text-xs px-3 py-1 bg-emerald-400/5 cursor-default">Open Source</span>
+                        <span class="badge rounded-full border border-emerald-500/50 text-emerald-400 text-xs px-3 py-1 bg-emerald-400/5 cursor-default">Model-Agnostic</span>
+                    </div>
+
+                    <!-- ══ TWO-COLUMN: PROJECTS + ACTIVITY ══ -->
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+                        <!-- LEFT: Projects / Workstreams (7/12) -->
+                        <div class="lg:col-span-7 space-y-4">
+                            <div class="flex items-center justify-between">
+                                <h3 class="text-sm font-semibold text-slate-200">Workstreamy</h3>
+                                <button class="text-xs text-emerald-400 hover:text-emerald-300 transition-colors">Zobrazit vše</button>
+                            </div>
+
+                            <div class="rounded-xl border border-emerald-900/40 bg-otto-card divide-y divide-emerald-900/20">
+                                <!-- Project 1 -->
+                                <div class="card-hover p-5 space-y-3 cursor-pointer">
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center gap-3">
+                                            <i data-lucide="flame" class="w-4 h-4 text-orange-400"></i>
+                                            <span class="text-sm font-medium text-slate-100">Heating Calculator</span>
+                                        </div>
+                                        <span class="text-[10px] bg-emerald-400/15 text-emerald-400 px-2 py-0.5 rounded-full">Produkce</span>
+                                    </div>
+                                    <p class="text-xs text-slate-500">Kalkulačka TČ vs. EK s návratností a ROI · Cloudflare Pages</p>
+                                    <div class="flex items-center gap-3 text-[10px] text-slate-500">
+                                        <span>heating-calculator.pages.dev</span>
+                                        <span>·</span>
+                                        <span>Aktualizováno dnes</span>
+                                    </div>
+                                </div>
+
+                                <!-- Project 2 -->
+                                <div class="card-hover p-5 space-y-3 cursor-pointer">
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center gap-3">
+                                            <i data-lucide="shopping-cart" class="w-4 h-4 text-blue-400"></i>
+                                            <span class="text-sm font-medium text-slate-100">Nákupní seznam</span>
+                                        </div>
+                                        <span class="text-[10px] bg-blue-400/15 text-blue-400 px-2 py-0.5 rounded-full">Aktivní</span>
+                                    </div>
+                                    <p class="text-xs text-slate-500">Sledování akcí, cen a reminderů · Cron 8:00</p>
+                                    <div class="flex items-center gap-3 text-[10px] text-slate-500">
+                                        <span>8 položek s cenami</span>
+                                        <span>·</span>
+                                        <span>Denní sync</span>
+                                    </div>
+                                </div>
+
+                                <!-- Project 3 -->
+                                <div class="card-hover p-5 space-y-3 cursor-pointer">
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center gap-3">
+                                            <i data-lucide="newspaper" class="w-4 h-4 text-purple-400"></i>
+                                            <span class="text-sm font-medium text-slate-100">AI Newsletter</span>
+                                        </div>
+                                        <span class="text-[10px] bg-slate-600/30 text-slate-500 px-2 py-0.5 rounded-full">Pauzováno</span>
+                                    </div>
+                                    <p class="text-xs text-slate-500">Ranní shrnutí AI novinek · Email na Škoda</p>
+                                    <div class="flex items-center gap-3 text-[10px] text-slate-500">
+                                        <span>Cron deaktivován</span>
+                                        <span>·</span>
+                                        <span>Čeká na obnovení</span>
+                                    </div>
+                                </div>
+
+                                <!-- Project 4 -->
+                                <div class="card-hover p-5 space-y-3 cursor-pointer">
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center gap-3">
+                                            <i data-lucide="shield" class="w-4 h-4 text-emerald-400"></i>
+                                            <span class="text-sm font-medium text-slate-100">Cockpit</span>
+                                        </div>
+                                        <span class="text-[10px] bg-amber-400/15 text-amber-400 px-2 py-0.5 rounded-full">Vývoj</span>
+                                    </div>
+                                    <p class="text-xs text-slate-500">Zabezpečené rozhraní pro správu agenta · Lokální</p>
+                                    <div class="flex items-center gap-3 text-[10px] text-slate-500">
+                                        <span>r2d2-cockpit/</span>
+                                        <span>·</span>
+                                        <span>Statický mock</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- RIGHT: Activity Feed (5/12) -->
+                        <div class="lg:col-span-5 space-y-4">
+                            <div class="flex items-center justify-between">
+                                <h3 class="text-sm font-semibold text-slate-200">Aktivita</h3>
+                                <button class="text-xs text-emerald-400 hover:text-emerald-300 transition-colors">Filtr</button>
+                            </div>
+
+                            <div class="rounded-xl border border-emerald-900/40 bg-otto-card divide-y divide-emerald-900/20">
+                                <!-- Activity items -->
+                                <div class="feed-item p-4 flex items-start gap-3">
+                                    <div class="avatar-sm avatar bg-emerald-400/20 text-emerald-400 shrink-0 mt-0.5">🦉</div>
+                                    <div class="min-w-0">
+                                        <p class="text-xs text-slate-300"><span class="font-medium text-slate-200">OTTO</span> odeslal nákupní akce na iMessage</p>
+                                        <p class="text-[10px] text-slate-500 mt-0.5">před 8 hodinami · Cron</p>
+                                    </div>
+                                </div>
+
+                                <div class="feed-item p-4 flex items-start gap-3">
+                                    <div class="avatar-sm avatar bg-emerald-400/20 text-emerald-400 shrink-0 mt-0.5">🦉</div>
+                                    <div class="min-w-0">
+                                        <p class="text-xs text-slate-300"><span class="font-medium text-slate-200">OTTO</span> přidal sekci návratnosti TČ do kalkulačky</p>
+                                        <p class="text-[10px] text-slate-500 mt-0.5">včera 22:50 · Web</p>
+                                    </div>
+                                </div>
+
+                                <div class="feed-item p-4 flex items-start gap-3">
+                                    <div class="avatar-sm avatar bg-amber-400/20 text-amber-400 shrink-0 mt-0.5">⚠️</div>
+                                    <div class="min-w-0">
+                                        <p class="text-xs text-slate-300"><span class="font-medium text-amber-400">WhatsApp</span> gateway výpadek 499</p>
+                                        <p class="text-[10px] text-slate-500 mt-0.5">každých 30 min · Auto-reconnect</p>
+                                    </div>
+                                </div>
+
+                                <div class="feed-item p-4 flex items-start gap-3">
+                                    <div class="avatar-sm avatar bg-blue-400/20 text-blue-400 shrink-0 mt-0.5">📧</div>
+                                    <div class="min-w-0">
+                                        <p class="text-xs text-slate-300"><span class="font-medium text-slate-200">Email</span> — nová zpráva od Petra (Škoda Auto)</p>
+                                        <p class="text-[10px] text-slate-500 mt-0.5">dnes 21:38 · Dashboard požadavek</p>
+                                    </div>
+                                </div>
+
+                                <div class="feed-item p-4 flex items-start gap-3">
+                                    <div class="avatar-sm avatar bg-emerald-400/20 text-emerald-400 shrink-0 mt-0.5">✅</div>
+                                    <div class="min-w-0">
+                                        <p class="text-xs text-slate-300"><span class="font-medium text-slate-200">Kobras.cz</span> — vyřešeno</p>
+                                        <p class="text-[10px] text-slate-500 mt-0.5">dnes 21:50 · Připomínka</p>
+                                    </div>
+                                </div>
+
+                                <div class="feed-item p-4 flex items-start gap-3">
+                                    <div class="avatar-sm avatar bg-rose-400/20 text-rose-400 shrink-0 mt-0.5">🔴</div>
+                                    <div class="min-w-0">
+                                        <p class="text-xs text-slate-300"><span class="font-medium text-rose-400">Ollama cloud</span> timeout všech modelů</p>
+                                        <p class="text-[10px] text-slate-500 mt-0.5">12.4. 22:35 · Dočasný výpadek</p>
+                                    </div>
+                                </div>
+
+                                <div class="feed-item p-4 flex items-start gap-3">
+                                    <div class="avatar-sm avatar bg-purple-400/20 text-purple-400 shrink-0 mt-0.5">🔥</div>
+                                    <div class="min-w-0">
+                                        <p class="text-xs text-slate-300"><span class="font-medium text-slate-200">Moltbook</span> top 5 odesláno na iMessage</p>
+                                        <p class="text-[10px] text-slate-500 mt-0.5">včera 20:30 · Cron</p>
+                                    </div>
+                                </div>
+
+                                <div class="feed-item p-4 flex items-start gap-3">
+                                    <div class="avatar-sm avatar bg-slate-600/30 text-slate-500 shrink-0 mt-0.5">💾</div>
+                                    <div class="min-w-0">
+                                        <p class="text-xs text-slate-300"><span class="font-medium text-slate-200">Záloha paměti</span> dokončena</p>
+                                        <p class="text-[10px] text-slate-500 mt-0.5">včera 23:55 · Cron</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ══ IST / NICHT ══ -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="rounded-xl border border-emerald-900/40 bg-otto-card p-6 space-y-4">
+                            <h3 class="text-xs tracking-[0.15em] uppercase text-emerald-400 font-semibold">✓ Co jsme</h3>
+                            <ul class="space-y-2.5">
+                                <li class="flex items-start gap-2 text-sm text-slate-300"><span class="text-emerald-400 mt-0.5 shrink-0">▸</span>AI agent v chatových kanálech</li>
+                                <li class="flex items-start gap-2 text-sm text-slate-300"><span class="text-emerald-400 mt-0.5 shrink-0">▸</span>Jeden proces, více kanálů současně</li>
+                                <li class="flex items-start gap-2 text-sm text-slate-300"><span class="text-emerald-400 mt-0.5 shrink-0">▸</span>Routing pro modely, nástroje a sub-agenty</li>
+                                <li class="flex items-start gap-2 text-sm text-slate-300"><span class="text-emerald-400 mt-0.5 shrink-0">▸</span>Rozšiřitelný přes Skills, Automation, ACP</li>
+                                <li class="flex items-start gap-2 text-sm text-slate-300"><span class="text-emerald-400 mt-0.5 shrink-0">▸</span>Open Source, self-hosted, model-agnostic</li>
+                            </ul>
+                        </div>
+                        <div class="rounded-xl border border-emerald-900/40 bg-otto-card p-6 space-y-4">
+                            <h3 class="text-xs tracking-[0.15em] uppercase text-slate-500 font-semibold">✗ Co nejsme</h3>
+                            <ul class="space-y-2.5">
+                                <li class="flex items-start gap-2 text-sm text-slate-500"><span class="text-rose-400 mt-0.5 shrink-0">✗</span>Ne ChatGPT klon</li>
+                                <li class="flex items-start gap-2 text-sm text-slate-500"><span class="text-rose-400 mt-0.5 shrink-0">✗</span>Ne hostovaná služba</li>
+                                <li class="flex items-start gap-2 text-sm text-slate-500"><span class="text-rose-400 mt-0.5 shrink-0">✗</span>Ne jeden model</li>
+                                <li class="flex items-start gap-2 text-sm text-slate-500"><span class="text-rose-400 mt-0.5 shrink-0">✗</span>Ne klasický chatbot framework</li>
+                                <li class="flex items-start gap-2 text-sm text-slate-500"><span class="text-rose-400 mt-0.5 shrink-0">✗</span>Ne Enterprise SaaS</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- ══ FOOTER BANNER ══ -->
+                    <div class="rounded-xl border border-emerald-500/30 bg-emerald-950/40 py-5 text-center">
+                        <p class="text-lg font-semibold text-emerald-400">Jeden proces. Mnoho kanálů. Plná kontrola. 🦉</p>
+                    </div>
                 </div>
-
-                <!-- TAG CHIPS -->
-                <div class="flex flex-wrap gap-2">
-                    <span class="rounded-full border border-emerald-500/60 text-emerald-400 text-sm px-3 py-1">Self-hosted</span>
-                    <span class="rounded-full border border-emerald-500/60 text-emerald-400 text-sm px-3 py-1">Multi-Channel</span>
-                    <span class="rounded-full border border-emerald-500/60 text-emerald-400 text-sm px-3 py-1">Agent-Native</span>
-                    <span class="rounded-full border border-emerald-500/60 text-emerald-400 text-sm px-3 py-1">Open Source</span>
-                    <span class="rounded-full border border-emerald-500/60 text-emerald-400 text-sm px-3 py-1">Model-Agnostic</span>
-                </div>
-
-                <!-- FEATURE GRID -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
-                    <!-- Multi-Channel -->
-                    <div class="feature-card rounded-xl border border-emerald-900/40 bg-cockpit-card p-5 space-y-3">
-                        <i data-lucide="message-square" class="w-6 h-6 text-emerald-400"></i>
-                        <h3 class="font-semibold text-base text-white">Multi-Channel</h3>
-                        <p class="text-sm text-slate-400 leading-relaxed">Matrix, Signal, Telegram, WhatsApp, Discord, Teams, Slack, iMessage — ein Gateway, viele Kanäle.</p>
-                    </div>
-
-                    <!-- Agent-Native -->
-                    <div class="feature-card rounded-xl border border-emerald-900/40 bg-cockpit-card p-5 space-y-3">
-                        <i data-lucide="cpu" class="w-6 h-6 text-emerald-400"></i>
-                        <h3 class="font-semibold text-base text-white">Agent-Native</h3>
-                        <p class="text-sm text-slate-400 leading-relaxed">Sessions, Memory, Tool-Use, Routing, Sub-Agents — gebaut für agentengerechte Interaktion.</p>
-                    </div>
-
-                    <!-- Self-Hosted -->
-                    <div class="feature-card rounded-xl border border-emerald-900/40 bg-cockpit-card p-5 space-y-3">
-                        <i data-lucide="home" class="w-6 h-6 text-emerald-400"></i>
-                        <h3 class="font-semibold text-base text-white">Self-Hosted</h3>
-                        <p class="text-sm text-slate-400 leading-relaxed">Volle Kontrolle über Betrieb, Datenfluss und Integrationen. Kein Cloud-Zwang.</p>
-                    </div>
-
-                    <!-- Open -->
-                    <div class="feature-card rounded-xl border border-emerald-900/40 bg-cockpit-card p-5 space-y-3">
-                        <i data-lucide="unlock" class="w-6 h-6 text-emerald-400"></i>
-                        <h3 class="font-semibold text-base text-white">Open</h3>
-                        <p class="text-sm text-slate-400 leading-relaxed">MIT-Lizenz, Community-driven, model-agnostic. Kein Vendor-Lock-in.</p>
-                    </div>
-                </div>
-
-                <!-- IST / NICHT -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <!-- IST -->
-                    <div class="rounded-xl border border-emerald-900/40 bg-cockpit-card p-6 space-y-4">
-                        <h3 class="text-xs tracking-[0.15em] uppercase text-emerald-400 font-semibold">✓ IST</h3>
-                        <ul class="space-y-2.5">
-                            <li class="flex items-start gap-2 text-sm text-slate-300"><span class="text-emerald-400 mt-0.5 shrink-0">▸</span>Gateway für AI Agents in Chat-Umgebungen</li>
-                            <li class="flex items-start gap-2 text-sm text-slate-300"><span class="text-emerald-400 mt-0.5 shrink-0">▸</span>Ein Prozess für viele Kanäle gleichzeitig</li>
-                            <li class="flex items-start gap-2 text-sm text-slate-300"><span class="text-emerald-400 mt-0.5 shrink-0">▸</span>Routing-Layer für Modelle, Tools und Sub-Agents</li>
-                            <li class="flex items-start gap-2 text-sm text-slate-300"><span class="text-emerald-400 mt-0.5 shrink-0">▸</span>Erweiterbar über Skills, Automation und ACP</li>
-                            <li class="flex items-start gap-2 text-sm text-slate-300"><span class="text-emerald-400 mt-0.5 shrink-0">▸</span>Open Source und selbst hostbar</li>
-                        </ul>
-                    </div>
-
-                    <!-- NICHT -->
-                    <div class="rounded-xl border border-emerald-900/40 bg-cockpit-card p-6 space-y-4">
-                        <h3 class="text-xs tracking-[0.15em] uppercase text-slate-500 font-semibold">✗ NICHT</h3>
-                        <ul class="space-y-2.5">
-                            <li class="flex items-start gap-2 text-sm text-slate-500"><span class="text-rose-400 mt-0.5 shrink-0">✗</span>Kein ChatGPT-Klon</li>
-                            <li class="flex items-start gap-2 text-sm text-slate-500"><span class="text-rose-400 mt-0.5 shrink-0">✗</span>Kein gehosteter Consumer-Service</li>
-                            <li class="flex items-start gap-2 text-sm text-slate-500"><span class="text-rose-400 mt-0.5 shrink-0">✗</span>Kein einzelnes Modell</li>
-                            <li class="flex items-start gap-2 text-sm text-slate-500"><span class="text-rose-400 mt-0.5 shrink-0">✗</span>Kein klassisches Chatbot-Framework</li>
-                            <li class="flex items-start gap-2 text-sm text-slate-500"><span class="text-rose-400 mt-0.5 shrink-0">✗</span>Kein Enterprise SaaS</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <!-- FOOTER BANNER -->
-                <div class="rounded-xl border border-emerald-500/30 bg-emerald-950/40 py-5 text-center">
-                    <p class="text-xl font-semibold text-emerald-400">One gateway process. Many channels. Many agents. Full control.</p>
-                </div>
-
             </div>
         </main>
+    </div>
+
+    <!-- Mobile bottom bar -->
+    <div class="mobile-bar fixed bottom-0 left-0 right-0 z-50 bg-otto-bg/95 backdrop-blur border-t border-emerald-900/30 hidden justify-around py-2 px-4">
+        <button class="flex flex-col items-center gap-0.5 text-emerald-400"><i data-lucide="layout-dashboard" class="w-5 h-5"></i><span class="text-[9px]">Home</span></button>
+        <button class="flex flex-col items-center gap-0.5 text-slate-500"><i data-lucide="activity" class="w-5 h-5"></i><span class="text-[9px]">Aktivita</span></button>
+        <button class="flex flex-col items-center gap-0.5 text-slate-500"><i data-lucide="message-square" class="w-5 h-5"></i><span class="text-[9px]">Kanály</span></button>
+        <button class="flex flex-col items-center gap-0.5 text-slate-500"><i data-lucide="bot" class="w-5 h-5"></i><span class="text-[9px]">Agenti</span></button>
+        <button class="flex flex-col items-center gap-0.5 text-slate-500"><i data-lucide="settings" class="w-5 h-5"></i><span class="text-[9px]">Nastavení</span></button>
     </div>
 
     <script>

@@ -1,0 +1,101 @@
+{
+  "version": 1,
+  "updatedAt": "2026-04-21T05:00:29.485Z",
+  "entries": {
+    "memory:memory/2026-03-29.md:31:49": {
+      "key": "memory:memory/2026-03-29.md:31:49",
+      "path": "memory/2026-03-29.md",
+      "startLine": 31,
+      "endLine": 49,
+      "source": "memory",
+      "snippet": "- Deploynuto na Cloudflare Pages: https://d6d414f3.otta-kanban-v2.pages.dev - Dashboard obsahuje: backlog (5 úkolů), V průběhu (1), Hotovo (10) ## Builder Agent - Spawnut subagent \"builder\" pro autonomní coding + deploy workflow - Workspace: ~/CODE, čeká na úkoly ## Notes - Moltbook API key stále chybí (~/.config/moltbook/credentials.json) - OpenClaw restartován s novým qwen3 model lineupem - Wrangler warning: ~/.openclaw/workspace/wrangler.toml nemá pages_build_output_dir ## OpenClaw Config Changes - `qwen2.5:7b` a `qwen2.5:14b` odstraněny z ollama model listu - `qwen3:4b` přidán (reasoning: false, contextWindow: 131072) - `qwen3:14b` přidán jako primární fallback - `ollama/qwen3:4b` nas",
+      "recallCount": 2,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 0.8964858633957407,
+      "maxScore": 0.4859950441826145,
+      "firstRecalledAt": "2026-04-21T04:59:31.087Z",
+      "lastRecalledAt": "2026-04-21T04:59:34.543Z",
+      "queryHashes": [
+        "f90453ec712c",
+        "0b355dea8e56"
+      ],
+      "recallDays": [
+        "2026-04-21"
+      ],
+      "conceptTags": [
+        "config/moltbook/credentials.json",
+        "openclaw/workspace/wrangler.toml",
+        "pages-build-output-dir",
+        "qwen2.5",
+        "ollama/qwen3",
+        "deploynuto",
+        "cloudflare",
+        "pages"
+      ]
+    },
+    "memory:memory/2026-03-29.md:1:39": {
+      "key": "memory:memory/2026-03-29.md:1:39",
+      "path": "memory/2026-03-29.md",
+      "startLine": 1,
+      "endLine": 39,
+      "source": "memory",
+      "snippet": "# 2026-03-29 — Daily Notes ## Session Summary ### Morning (09:55) - Shopping deals: Penny akce (mléko 19.90, chléb 24.90, vejce 39.90, Eidam 14.90, zelenina 29.90), Lidl mozzarella 14.90 - Syncnuty ceny do Apple Reminders (Nákupy list) — opravena Mozzarellu (byla chybně u Penny, správně Lidl) - Označeny jako hotové propadlé akce Penny (03.03.2026) - Ranní briefing: OpenClaw v0.29.0, Moltbook hot topics → poslány na iMessage ### Mid-day (11:00) - Moltbook API key chybí — credentials file neexistuje - Backup paměti selhal (soubor 2026-03-29.md neexistoval) ### Evening (20:30) - Druhý pokus o ranní briefing, Moltbook API key stále chybí - Druhý backup paměti selhal (stále stejný důvod) ###",
+      "recallCount": 2,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 0.8315778481688934,
+      "maxScore": 0.44672203164550645,
+      "firstRecalledAt": "2026-04-21T04:59:31.087Z",
+      "lastRecalledAt": "2026-04-21T04:59:34.543Z",
+      "queryHashes": [
+        "f90453ec712c",
+        "0b355dea8e56"
+      ],
+      "recallDays": [
+        "2026-04-21"
+      ],
+      "conceptTags": [
+        "backup",
+        "19.90",
+        "24.90",
+        "39.90",
+        "14.90",
+        "29.90",
+        "03.03.2026",
+        "v0.29.0"
+      ]
+    },
+    "memory:memory/2026-04-20.md:1:11": {
+      "key": "memory:memory/2026-04-20.md:1:11",
+      "path": "memory/2026-04-20.md",
+      "startLine": 1,
+      "endLine": 11,
+      "source": "memory",
+      "snippet": "## R2D2 Cockpit (20:40) - Petr poslal email s požadavkem: „Předělej v tomto stylu naše rozhraní pro vše\" - Referenční UI: tmavý emerald design (Linear/Raycast/shadcn styl) - Vytvořen `r2d2-cockpit/openclaw-cockpit.html` – statický mock - Stack: HTML5 + Tailwind CDN + Lucide Icons + Inter font - Sidebar: 17 položek ve 3 sekcích (CORE, DEV-PIPE, OPERATIONS) - Obsah: hero + architektonický diagram, 5 tag chips, 4 feature karty, IST/NICHT srovnání, footer banner - Cíl: zabezpečený komunikační kanál ven – naše rozhraní pro vše - Gmail App Password nastaven pro otto@honeger.com (IMAP/SMTP funkční)",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 0.4107472598552704,
+      "maxScore": 0.4107472598552704,
+      "firstRecalledAt": "2026-04-21T05:00:29.485Z",
+      "lastRecalledAt": "2026-04-21T05:00:29.485Z",
+      "queryHashes": [
+        "15c345978193"
+      ],
+      "recallDays": [
+        "2026-04-21"
+      ],
+      "conceptTags": [
+        "linear/raycast/shadcn",
+        "dev-pipe",
+        "ist/nicht",
+        "honeger.com",
+        "imap/smtp",
+        "r2d2",
+        "cockpit",
+        "petr"
+      ]
+    }
+  }
+}

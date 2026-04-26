@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-04-21T05:00:29.485Z",
+  "updatedAt": "2026-04-26T01:00:14.283Z",
   "entries": {
     "memory:memory/2026-03-29.md:31:49": {
       "key": "memory:memory/2026-03-29.md:31:49",
@@ -95,6 +95,68 @@
         "r2d2",
         "cockpit",
         "petr"
+      ]
+    },
+    "memory:memory/2026-04-01.md:1:15": {
+      "key": "memory:memory/2026-04-01.md:1:15",
+      "path": "memory/2026-04-01.md",
+      "startLine": 1,
+      "endLine": 15,
+      "source": "memory",
+      "snippet": "# 2026-04-01 ## Nightly Update Check (01:00 UTC) - **OpenClaw**: already on latest stable `2026.3.31` (no update needed) - No registry updates available - `pnpm deps status: unknown` — lockfile missing (expected for package install) --- *Auto-created by cron:81e8f63d-dc12-411e-a48c-db714fe0176a* ## Poznámky k volání - **Hamáček** — volat 11.4. (Pepa) — čerpadlo",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 0.3940013617277145,
+      "maxScore": 0.3940013617277145,
+      "firstRecalledAt": "2026-04-26T01:00:14.283Z",
+      "lastRecalledAt": "2026-04-26T01:00:14.283Z",
+      "queryHashes": [
+        "968cae4d8cc7"
+      ],
+      "recallDays": [
+        "2026-04-26"
+      ],
+      "conceptTags": [
+        "2026.3.31",
+        "auto-created",
+        "11.4",
+        "nightly",
+        "update",
+        "check",
+        "utc",
+        "openclaw"
+      ]
+    },
+    "memory:memory/2026-03-17.md:1:21": {
+      "key": "memory:memory/2026-03-17.md:1:21",
+      "path": "memory/2026-03-17.md",
+      "startLine": 1,
+      "endLine": 21,
+      "source": "memory",
+      "snippet": "# 2026-03-17 - Daily Memory ## Cron Job: OpenClaw Nightly Update Check (6:52) **Úkol:** Kontrola aktualizací OpenClaw **Výsledek:** - ✅ Žádná aktualizace k dispozici (stabilní kanál) - ✅ Synchronizováno s verzí 2026.3.13 **Vyřešený problém:** - ⚠️ Zjištěn `pnpm` lockfile chybějící (status: unknown) - ✅ Spuštěn `npm install` v `/opt/homebrew/lib/node_modules/openclaw` - ✅ Aktualizováno 250 balíčků, odebráno 2, změněno 1 - ✅ Původně hlášeno 2 kritické zranitelnosti → **vyřešeno** (npm audit nyní hlásí 0) **Poznámka:** `pnpm` není v PATH, používám `npm` správu balíčků. **Další kroky:** - Monitorovat příští update check - Věřit, že npm install opravil lockfile issue",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 0.3684888452291488,
+      "maxScore": 0.3684888452291488,
+      "firstRecalledAt": "2026-04-26T01:00:14.283Z",
+      "lastRecalledAt": "2026-04-26T01:00:14.283Z",
+      "queryHashes": [
+        "968cae4d8cc7"
+      ],
+      "recallDays": [
+        "2026-04-26"
+      ],
+      "conceptTags": [
+        "2026.3.13",
+        "cron",
+        "job",
+        "openclaw",
+        "nightly",
+        "update",
+        "check",
+        "úkol"
       ]
     }
   }

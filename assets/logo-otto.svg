@@ -1,0 +1,45 @@
+<svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="otto-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6366f1"/>
+      <stop offset="50%" stop-color="#8b5cf6"/>
+      <stop offset="100%" stop-color="#ec4899"/>
+    </linearGradient>
+    <linearGradient id="otto-text-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#e0e7ff"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- Background circle -->
+  <circle cx="60" cy="60" r="56" fill="url(#otto-gradient)" opacity="0.15"/>
+  <circle cx="60" cy="60" r="52" fill="url(#otto-gradient)" opacity="0.25"/>
+  
+  <!-- Central AI core/node shape -->
+  <circle cx="60" cy="60" r="28" fill="url(#otto-gradient)"/>
+  
+  <!-- Connection nodes -->
+  <circle cx="60" cy="28" r="8" fill="url(#otto-gradient)"/>
+  <circle cx="60" cy="92" r="8" fill="url(#otto-gradient)"/>
+  <circle cx="28" cy="60" r="8" fill="url(#otto-gradient)"/>
+  <circle cx="92" cy="60" r="8" fill="url(#otto-gradient)"/>
+  
+  <!-- Connection lines -->
+  <line x1="60" y1="36" x2="60" y2="52" stroke="url(#otto-gradient)" stroke-width="3" stroke-linecap="round"/>
+  <line x1="60" y1="68" x2="60" y2="84" stroke="url(#otto-gradient)" stroke-width="3" stroke-linecap="round"/>
+  <line x1="36" y1="60" x2="52" y2="60" stroke="url(#otto-gradient)" stroke-width="3" stroke-linecap="round"/>
+  <line x1="68" y1="60" x2="84" y2="60" stroke="url(#otto-gradient)" stroke-width="3" stroke-linecap="round"/>
+  
+  <!-- Diagonal connections -->
+  <line x1="42" y1="42" x2="52" y2="52" stroke="url(#otto-gradient)" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
+  <line x1="78" y1="42" x2="68" y2="52" stroke="url(#otto-gradient)" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
+  <line x1="42" y1="78" x2="52" y2="68" stroke="url(#otto-gradient)" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
+  <line x1="78" y1="78" x2="68" y2="68" stroke="url(#otto-gradient)" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
+  
+  <!-- Center glow -->
+  <circle cx="60" cy="60" r="14" fill="white" opacity="0.3"/>
+  <circle cx="60" cy="60" r="8" fill="white" opacity="0.5"/>
+  
+  <!-- OTTO text -->
+  <text x="60" y="118" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="700" fill="url(#otto-text-gradient)" letter-spacing="2">OTTO</text>
+</svg>
